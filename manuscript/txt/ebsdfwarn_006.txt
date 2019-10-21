@@ -1,0 +1,27 @@
+HSTNM=$(hostname)-ebs505 
+MAILLST="thom email@removed email@removed" #<<< Use login names seperated by spaces 
+OSLVL=$(oslevel -r) 
+SYSID="$HSTHM,$OSLVL"
+
+[[ -n $(df -kt |grep 9[4-9]%) ]]  || {
+date 
+find /tmp -xdev -size +2048 -ls |sort -r +6 
+echo "END WITHOUT email $(date) on hostname=$SYSID" 
+exit
+}
+warning="/ebs/misc/tmp/ebsdfwarn.out"
+syswarn () { 
+echo "\n$(date) hostname=$SYSID NEEDS ATTENTION:" 
+echo "\n\r\rWARNING these file systems are approaching being full on hostname=$SYSID:\r"
+echo "\r" 
+echo "Filesystem 1024-blocks Used Free %Used Mounted on\r"
+echo "${x}\r" 
+echo "\r"
+echo ">>>>>>>>>> THIS CAN POTENTIALLY CAUSE LOSS OF DATA <<<<<<<<<\r\r" 
+find /tmp -xdev -size +2048 -ls |sort -r +6
+}
+syswarn > $warning
+mail -s "!!!!! CHECK %USED FOR FILE SYSTEMS ON hostname = $SYSID !!!!!" ${MAILLST} < $warning
+echo "END WITH email $(date) on hostname=$SYSID" 
+exit 1
+

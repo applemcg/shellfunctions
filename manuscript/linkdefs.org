@@ -1,0 +1,7 @@
+
+#+LINK: drdobbs    http://www.drdobbs.com/
+#+LINK: gutenberg  http://www.guterberg.org/files/
+#+LINK: marty3     http://mcgowans.org/pubs/marty3/
+#+LINK: nytimes    http://www.nytimes.com/
+#+LINK: wiki       https://en.wikipedia.org/wiki/
+#+LINK: youtube    https://www.youtube.com/watch?v=

@@ -1,0 +1,14 @@
+    comment_demo
+    this is a comment
+    
+    quietly comment_demo
+    
+    ignore comment_demo
+    this is a comment
+    
+    fbdy comment_demo
+    comment_demo () 
+    { 
+        comment this is a comment
+    }
+    

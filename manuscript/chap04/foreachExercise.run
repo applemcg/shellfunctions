@@ -1,0 +1,18 @@
+    # foreach dateArg ...
+    a: Sat
+    e: 18
+    i: i
+    o: o
+    u: 6
+    # fbdy foreach dateArg
+    foreach () 
+    { 
+        for arg in ${@:2};
+        do
+            $1 $arg;
+        done
+    }
+    dateArg () 
+    { 
+        date "+$1: %$1"
+    }

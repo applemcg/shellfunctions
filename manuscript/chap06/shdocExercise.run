@@ -1,0 +1,17 @@
+    function _shdoc_doc {
+        : date: 2018-02-16;
+    }
+    function shdoc_doc {
+        : this is a shell doclib "shdoc" comment;
+        : an shdoc comment is the first ":"-origin lines;
+        : in the shell function, the rest being the executable.;
+        : 2019-01-28 use local _shdoc and produce declare -f format;
+    }
+    function shd_justcolon_doc {
+        : returns leading colon-comments from a SINGLE function;
+    }
+    function myname_doc {
+        : ~ [n];
+        : returns name of caller OR callers caller ...;
+        : date: 2018-02-16;
+    }

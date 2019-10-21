@@ -1,0 +1,96 @@
+#+TITLE:   shellfunctions -- Book Work
+#+INCLUDE: orgheader.org
+
+Challenge: tool to capture each section
+
+** Pseudo-code:
+
+1. at each step, link (*ln*) a subset of the functions to /booklib/
+1. use a function ch{NN}fun which:
+    + sources the one before it, and
+    + echo's its own new names, e.g.
+
+    : ch03fun () { source ch02fun; myfbdy functions introduced in chapter3; }
+
+1. build this from a table:
+
+    
+    :  ORDER	CHAPTER	DOES	FUNCTIONS
+    :  -----	-------	----	---------  
+    :   nn      name	add	introduced in chapter3
+    :   ..      ....    ...	.............
+
+    + where the first chapter has no prior chapter.
+    + use an awk script
+    + where the chapters are sorted on their ORDER, so that
+    + each chapter only needs to know it's predecessor 
+
+** thoughs, discussion
+
+1. this leaves open the question of updating a function in a later chapter.  
+
+1. it seems that a function updated in a later chapter, then must have
+   that unique body stored in an accessible place
+
+1. in this picture, a function like:
+
+    : chNNsrc () { 
+    :      function introduced { ...; }
+    :      ....
+    :      }
+
+    so therefore, /myfbdy/ would execute its caller's *src*, and display 
+    the bodies of it's arguments!
+
+    and the name of the DOES operation to delete could be /delete,
+    unset, remove/,... pick one.
+
+1. A chapter adding and deleting functions could have the same sort order
+   since a function to be removed would be of no use at any time in the chapter.
+   If it were, the removal could be deferred to the next chapter.
+
+1.  this brings up the possibility of two tables"
+
+     : chapter:   ORDER, CHAPTER
+
+   and 
+     : function:  CHAPTER, DOES, FUNCTIONS
+
+   but that seems to be way ahead of ourselves
+
++ Operation
+
+1. the awk script generates the chNNsrc functions into a library
+
+1. a script further checks that ADDed functions are in their 
+    respective source files
+
+   e.g. 
+
+   : $ unset           # the World
+   : $ source ch02src  # loads chs 1 and 2
+   : $ functions       > .ch02.txt
+   : $ ch03src         # adds the  ch03 functions
+   : $ functions | comm -23 - .ch02.txt | compare_to_new03
+
+1. requiring the chNNsrc functions to unset the deleted functions
+
+** and away we go
+
+1. first the table
+
+    + [[./chfun.txt][./chfun.txt]]
+
+
+1. then the scripts
+
+    + [[./chfun.awk][chfun.awk]]
+    + [[./chsrc.awk][chsrc.awk]]
+
+1. and library functions
+
+    + [[./mklib][mklib]]
+
+1. and the as-built chLIB
+
+    + [[./challlib][challlib]]

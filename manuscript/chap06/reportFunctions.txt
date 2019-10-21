@@ -1,0 +1,29 @@
+       isfunction () 
+       { 
+           trace_call $*;
+           declare -f $1 > /dev/null
+       }
+
+       report_notcalledby () 
+       { 
+           : promote to auxlib when satisfied;
+           set ${1:-/dev/null} $(myname 3) non-Existant-function;
+           [[ $2 == $1 ]] && return 1;
+           report_usage was NOT called by $1.
+       }
+
+       report_notfunction () 
+       { 
+           set ${1:-/dev/null};
+           isfunction $1 && return 1;
+           report_usage $1 is NOT a Function
+       }
+
+       report_usage () 
+       { 
+           echo USAGE $(myname 3) $* 1>&2
+       }
+       trace_call () 
+       { 
+           echo $* 1>&2
+       }

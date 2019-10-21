@@ -1,0 +1,216 @@
+
+
+* MM4 -- Markdown with M4                    :leanpub:markua:markdown:gruber:
+
+[[http://leanpub.com][Leanpub]] is now (since 2018) using a flavor of Markdown they call
+Markua.  It is upwardly compatible with [[https://daringfireball.net/projects/markdown/][Gruber Markdown]] with the sole
+exception that it doesn't accept embedded HTML.  MM4 solves the
+problem, accepting the Markua view that those HTML constructs that
+Gruber doesn't handle can be fit into a simplifying syntactic
+framework.  The MM4 solution is an author-centric view, allowing the
+user to transform their current Gruber Markdown on an as-needed basis
+to Markua.  The practice established here adopts the view that neither
+is the last word in text editing and formatting.
+
+** What is MM4                                                           :m4:
+
+MM4 is a shell function, wrapping the m4 command, with a set of
+definitions to emit either Gruber Markdown or Markua with a
+command-line option.  The design interface at the moment is:
+
+
+    : $ mm4 [--define=_gruber] file ...  # OR
+    : $ mm4 --define=_markua file ...  
+
+
+The square brackets indicate the default format. Either the Gruber or
+Markua format of the output shows up on the *stdout*.
+
+** How Achieved
+    
+This is the function.  It uses the ~m4~ command, a macro processor which
+converts user definitions which map text argument into the desired format
+
+    : mm4 () 
+    : { 
+    :     cmd=${1:-m4};
+    :     shift;
+    :     ${cmd} $(include)/{hacks,underscore,local}.m4 $*
+    : }
+
+At the moment, there are two places where I'm reprocessing text in a
+near-Gruber format into a working Gruber format.
+
+*** Two Features to Model                    :include:header:name:awk:anchor:
+
+First, Gruber doesn't include files from other sources into the output
+stream.  Since I'm writing the Shell Functions book at the moment, there
+are places where I'd like to include a shell fragment, followed by it's
+resulting output.  A few years ago I'd picked up a genric include processor,
+whose syntax admits ~@include ../path/to/thisfile.suf~ for example.  Of course,
+it's a recursive process allowing nested includes. 
+
+Also, Gruber doesn't do anything special with the names or labels of it's
+sections.  So, I'd pre-process those as well, turning something like
+
+    : ### Level Three Header
+
+into 
+
+    : <a name="level-three-header">
+    : ### Level Three Header
+    : </a>
+
+which allows in-document reference to this section.  At the moment, since
+Markua is a work in progress, here's what this would look like in Markua:
+
+    :  {id: three-level-header}
+    : ### Level Three Header
+
+In the next paragraph in the [[https://leanpub.com/markua][ Markua Manual]], it says:
+
+> This syntax is intended to be reminiscent of HTML anchor tags, not of ~h1~ titles in Markua
+
+At the moment, I handle this with a shell function ~labify~, basically
+an **awk** script to recognize the leading ##s and emit the prior text
+above.
+
+Since my threshold of pain is three, these two instances suggest the
+threshold isn't far off in upgrades to Markdown which anticipate
+Markua.   
+
+At the moment, these repairs are in separate locations in the process,
+both in terms of implementation language and processes.  Here's the function
+which MaKes the HyperText:
+
+#+BEGIN_SRC  sh
+mkht ()
+{
+     : convert a {default, the newest} Markdown into HTML copy
+     set -- ${1:-$(ls -t *.md| sed 1q)}
+     set $1  ../ch$(chno)_$1 ${1%.md}.{html,inc}
+     app_trace $*
+     backup_lib mklib
+     newest $3 $1 *.sh *.run $(llib)/references.txt && return
+     app_trace  "about to: markdown $1 > $2"
+     include $1 | tee $4 | labify | tee $2 |  markdown - > $3
+}
+#+END_SRC
+
+This is the crucial line:
+
+    : include $1 | tee $4 | labify | tee $2 |  markdown - > $3
+
+The second ~set~ command assigns these positional parameters:
+
+1. *somename*.md
+1. ../chNN_ *somename*.md
+1. *somename*.html
+1. *somename*.inc
+
+The include process resolves the ~@include~ directives in the *.md file,
+leaving the result in the *.inc file, adding the ~name~ labels, leaving the
+result in the parent directory, where it becomes the source of the Leanpub
+source document, and further runs (Gruber) ~markdown~ on the input, with the
+result in the local *.html file
+
+The ~newest~ command, a bit of ~make~ process expect the *.html file to be the 
+newest of its arguments, the *.md file, any *.{sh,run} files in the directory
+and a file of references in the local library.
+
+Using mm4 to combine these two repairs in a single process would look like:
+
+    : mm4 $1 | tee $2 | markdown - > $3
+
+Not only to simplify upgrading the process to include other features.
+
+
+
+
+*** The Solution
+
+The ~@include~ feature is directly absorbed into *mm4* with the
+~_include~ m4 builtin.  If you are somewhat familiar with m4, you know
+about it's ~include~ builtin.  mm4 uses a set of hacks which map all
+the builtin definitions onto an underscore prefix-named definition.
+This frees up ordinary and common programming words to not be consumed
+by the procesor.
+
+The ~labify~ feature will have to find it's way into the definitions.
+It's interface will look like this:
+
+    : _labify( text to labify[, optional trailing text])
+
+A header macro which whose interface is:
+
+    : _H( [level,] Heading text)
+
+Since ~labify~ is probably trivial (in Markua, certainly) the ~header~
+macro needs more careful specification.
+
+*** The Header Macro
+
+The last argument is the text to display. An optional first argument
+specifies the heading *level*.   Here's a first cut at the requirements
+
+|--------------------------+-------------------------------------------|
+| level                    | means                                     |
+|--------------------------+-------------------------------------------|
+| absent, blank, or empty  | use current header level                  |
+| N, e.g. 1,2,3            | Nth level header                          |
+| +, "push"                | Increment the level                       |
+| -, "pop"                 | decrement the level by one                |
+| -N                       | decrement the level by N                  |
+| "recall" (speculative)   | increment the level counter at this level |
+| #{1,N)   (an RE)         | Nth Level, assumes Markdown/Markua        |
+| *{1,N)   (an RE)         | Nth Level, assumes OrgMode                |
+| the very first encounter | Assume First Level                        |
+|--------------------------+-------------------------------------------|
+
+
+A question remains: are the ~push~ and ~pop~ operations, pre- or post-
+operations.  For the moment, I think both push is a POST operation,
+and pop is PRE.  It may be possible for a user to specify, or have
+other words, like "first", "last", at a given level, where "recall"
+would be an alternate value of "first".
+
+The absent, blank, or empty level would allow a header, named HDR, say
+to be used list this:
+
+    : HDR( #, First first-level header)
+    : HDR( Second first-level header)
+    : HDR( Third first-level header)
+    : HDR( Fourth first-level header)
+
+Then, suppose you were about to import a bunch of headers from 
+a file discussing 3rd level properties;
+
+    : HDR( one good thing)
+    : HDR( a better thing)
+    : HDR( the best thing)
+    : HDR( the absolute best)
+
+Simply insert the latter file into the buffer of the first:
+
+    : HDR( #, First first-level header)
+    : HDR( Second first-level header)
+    : HDR( push, Third first-level header)
+    : HDR(    one good thing)
+    : HDR(    a better thing)
+    : HDR(    the best thing)
+    : HDR(    the absolute best)
+    : HDR( pop, Fourth first-level header)
+
+The importance of a consistent header treatment allows
+the repeated use, not just the copy-paste operation, of 
+this approach
+
+    : HDR( #, First first-level header)
+    : HDR( Second first-level header)
+    : HDR( push, Third first-level header)
+    : INCLUDE( discussing 3rd level properties.txt)
+    : HDR( recall, Fourth first-level header)
+
+Note, use of "recall" is probably indicated in this case, 
+since the author of the enclosing file needn't know the
+structure of the included file.

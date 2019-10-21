@@ -1,0 +1,5 @@
+
+    $ dateArg c
+    c: Thu Jun 28 20:32:45 2018
+    $ dateArg F
+    F: 2018-06-28

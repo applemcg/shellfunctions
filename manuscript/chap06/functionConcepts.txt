@@ -1,0 +1,11 @@
+concept 05	 document a function, lessons learned from Java, Perl, PYthon ...
+concept 05	 shell array FUNCNAME
+concept 05	 which function called this function
+concept 05	 awk, simple usage
+function 05	 myname - what is the name of my calling function
+function 05	 report_notfunction - report if not called by it's argument
+function 05	 report_notpipe - report if standard input is not on a pipe
+function 05	 report_usage - used by reporting functions
+function 05	 shdoc - _shdoc over a list of functions
+function 05	 _shdoc -- supplies output function format for colon-comments
+function 05	 shd_justcolon -- returns leading colon comments

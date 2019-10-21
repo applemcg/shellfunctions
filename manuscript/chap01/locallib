@@ -1,0 +1,8 @@
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    today () 
+    { 
+        date +%Y%m%d
+    }

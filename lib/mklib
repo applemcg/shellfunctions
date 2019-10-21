@@ -1,0 +1,19 @@
+foreach () 
+{ 
+    local cmd=$1;
+    shift;
+    for arg in "$@";
+    do
+        $cmd $arg;
+    done
+}
+chall_mk () 
+{ 
+    awk -f chfun.awk chfun.txt;
+    awk -f chsrc.awk chfun.txt | tee chall.sh;
+    chmod +x chall.sh;
+    . ./chall.sh;
+    . ./chall.sh | tee challlib;
+    . ./challlib;
+    fsfg ch0.0src | tee challlib
+}

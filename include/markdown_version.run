@@ -1,0 +1,81 @@
+
+ 
+
+
+Version
+-------
+tested H, ttb, H w/ ttb -- trailing space
+
+tested tolower, namify w/ ttb tolower, H with namify
+
+tested dashify, namify w/dashify ttb tolower
+
+tested --define markua, ifdef
+
+tested {markdown,markua}.m4 separate files, default
+
+tested reverse, with recursive 0, repeeated with N, 1, 0, and blank args
+
+===================================================
+
+<a name="first-header">
+One First Header
+</a>
+This is lower case of First Header: first header
+
+<a name="unit-tests">
+##  Unit Tests
+</a>
+
+<a name="ttb">
+###  TTB 
+</a>
+
+
++ ( some text  ) : {some text}
++ ( some Other text ): {some Other text}
++ ( one last try): {one last try}
+
+<a name="header-with-trailing-space">
+#  Header with trailing space 
+</a>
+
+
+{another-trailing-blank}
+
+{Another---Trailing-Blank}
+
+
+<a name="other-utilities">
+#  Other Utilities 
+</a>
+
+
+<a name="reverse">
+##  Reverse 
+</a>
+
+
+
+
+reverse( a, b, c, 13, 12, 11):
+
+11, 12, 13, c, b, a
+
+<a name="repeated">
+##  Repeated 
+</a>
+
+
+
+
+repeated( 4, *):  ****
+repeated( 1, stuff ): stuff 
+repeated( 0, nothing): 
+repeated( 2, more stuff ): more stuff more stuff 
+
+<a name="available-internal-data">
+#  Available Internal Data 
+</a>
+
+test.m4, 49, /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/m4

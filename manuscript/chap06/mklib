@@ -1,0 +1,24 @@
+
+# libshere
+
+extract_new   | onlyChanged functionConcept.txt
+
+set -- {_,}shdoc shd_justcolon myname
+
+declare -f $* | tabch shdocExercise.sh
+shdoc $*      | tabch shdocExercise.run
+
+set -- report_{not{function,pipe},usage}
+
+declare -f $* | tabch reportFunctions.sh
+shdoc      $* | tabch reportFunctions.run
+
+functions {shdocExercise,reportFunctions}.sh | tee functions.txt
+
+#   cprove date "+a: %a" | fourspaces > dateA.run
+#   eprove "for arg in {a..z}; do date_arg \$arg; done" | fourspaces > dateAZ.run
+
+mkht
+
+
+

@@ -1,0 +1,12 @@
+
+# local backup, version directories
+.bak/
+.ver/
+ar/
+
+# stray files
+Icon*
+*~
+.*#
+*.err
+.[a-fh-z]*

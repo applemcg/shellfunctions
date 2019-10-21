@@ -1,0 +1,373 @@
+
+ [origscript]: http://goo.gl/RuXmvJ  "Original Script on ITtoolbox"
+
+ [lastfuncts]: http://shellfunctions.tiddlyspace.com/#FactorAshellScript
+               "Resulting Functions on ITtoolbox"
+
+ [readme]: http://mcgowans.org/pubs/shellfuncitons/README.md
+
+# Factor a shell script
+
+This  chapter takes  a  fairly  common type  of  shell script  through
+fourteen revisions, factoring it all into shell functions.
+
+The first question  is easy to answer: _Why bother?_  When you see the
+result, you'll have to agree that  functions are easier to maintain in
+the  face  of  changing  requirements.    They  should  be  easier  to
+understand, since  each function's job is  simpler.  Importantly, they
+should be easier to test, given the component nature of the functions.
+
+The big liability to the functional approach is that it's not been the
+way  most command-line  programming has  been taught,  if at  all.  My
+sense is that most programmers start  with the job at hand, proceeding
+in some serial fashion through the steps to set up the problem, gather
+some telling  data, query  the system for  its information,  then make
+some decision about either the nominal or exceptional cases and either
+leave some distinct evidence or report or act on the results.
+
+The script I chose to factor is just big enough to demonstrate each of
+the  fundamental  principles  for  choosing functions  over  a  single
+monolithic script.
+
+## The problem as solved.
+
+Here is  the script a user  posted on *ITtoolbox*, a  Unix, linux, and
+shell scripting forum:
+
+
+    HSTNM=$(hostname)-ebs505 
+    MAILLST="thom email@removed email@removed" #<<< Use login names seperated by spaces 
+    OSLVL=$(oslevel -r) 
+    x=`df -kt |grep 9[4-9]%` 
+    if [[ -n ${x} ]] 
+    then 
+    echo "\n$(date) hostname=$HSTNM,$OSLVL NEEDS ATTENTION:" > /ebs/misc/tmp/ebsdfwarn.out 
+    echo "\n\r\rWARNING these file systems are approaching being full on hostname=$HSTNM,$OSLVL:\r" >> /ebs/misc/tmp/ebsdfwarn.out 
+    echo "\r" >> /ebs/misc/tmp/ebsdfwarn.out 
+    echo "Filesystem 1024-blocks Used Free %Used Mounted on\r" >> /ebs/misc/tmp/ebsdfwarn.out 
+    echo "${x}\r" >> /ebs/misc/tmp/ebsdfwarn.out 
+    echo "\r" >> /ebs/misc/tmp/ebsdfwarn.out 
+    echo ">>>>>>>>>> THIS CAN POTENTIALLY CAUSE LOSS OF DATA <<<<<<<<<\r\r" >> /ebs/misc/tmp/ebsdfwarn.out 
+    find /tmp -xdev -size +2048 -ls |sort -r +6 >> /ebs/misc/tmp/ebsdfwarn.out 
+    mail -s "!!!!! CHECK %USED FOR FILE SYSTEMS ON hostname = $HSTNM,$OSLVL !!!!!" ${MAILLST} < /ebs/misc/tmp/ebsdfwarn.out 
+    echo "END WITH email $(date) on hostname=$HSTNM,$OSLVL" 
+    exit 1 
+    fi 
+    date 
+    find /tmp -xdev -size +2048 -ls |sort -r +6 
+    echo "END WITHOUT email $(date) on hostname=$HSTNM,$OSLVL" 
+
+In this exercise I've made successive small changes, which we'll step
+through, one at a time, changing a few lines at a time. 
+
+## Objectives of the method.
+
+What sort of changes will I make here, and why?
+
+1. write functions testable from the command line, making them 
+   reusable and  more maintainable,
+1. reduce the syntactic noise
+1. eliminate temporary files
+1. eliminate temporary shell variables
+1. use function arguments wherever possible
+1. collapse the problem into a single executable command, itself
+   a function.
+
+Why then, should you consider taking a working script through the
+exercise of factoring into functions and into a function library?
+
+Some of the  above steps suggest why you might,  but taking a possible
+higher perspective,  it's difficult  to say  which is  more important:
+increase understanding  of the  immediate problem, or  the longer-term
+productivity gain in building re-usable components.
+
+Here is a preview of what's involved in making the changes.
+
+### Testable components
+
+When factoring  scripts into functions  you soon notice  the functions
+are separately testable from the  command line.  For instance, I often
+see questions in  the shell forums like: _"I've got  this script which
+works when ...  except when ... "_.  Too often  the problem boils down
+to some shell or file-system detail  which could have been isolated in
+a separately testable function.
+
+In such cases,  I believe it's a positive learning  experience to home
+in on the simple facet and  build a solution for the low-level detail.
+With practice and experience,  you'll be discovering _natural factors_
+of the environment which should lead to a fair degree of re-use.
+
+When it's time to name a function, think of action verbs which
+describe _what_ is happening rather than _how_. Occasionally use
+verb-noun pairs.  I'll offer no suggestions on name conventions, other
+than notice I use both underscore (\_) and _camelCase_ notations
+for multi-word function names.
+
+### Syntactic noise
+ 
+What is _syntactic noise_?  Any  highly repeated syntax element of the
+programming language.  The easiest one to spot is the repeated use, or
+use at all of  the _append to file_ syntax ( __>>__  ).  Where you see
+this in a  script, you've identified the place to  _factor_ the script
+into functions.   If you're  not familiar  with the  so-called reverse
+engineering practice of factoring, it's collecting small code segments
+into separate components.  In this case, shell functions.
+
+### Temporary files
+
+Eliminating temporary  files will  lead to  simpler functions,  if not
+better use of system resources.   People often mis-interpret this goal
+as  improving  machine  performance.  The  more  important  reason  is
+improving human understanding.  The  Unix &reg#; __pipe__ was invented
+as a means to connect smaller, well-specified processes.
+
+Uses of  a temporary  file, when  a pipe  would suffice,  exhibits the
+designer's lack of  confidence in what is  a well-specified component.
+A well-constructed pipeline, with meaningful functions, is more easily
+read and  understood than  a thicket of  re-directions to  a temporary
+file.
+
+### Shell variables
+
+Temporary variables with  well-chosen names may be  attractive, but as
+we will see in this example, two variables are really used as one, and
+might  even have  been written  into a  simple function,  not for  any
+reason in this  code as such, but as generic  means of identifying the
+server.
+
+This exercise concludes  by introducing an ENVIRONMENT  variable for a
+log, or message file.  This does two things: it allows users to define
+their  own  log  file,  or   possibly  make  the  logs  execution-time
+dependent, or it may throw into  question the need for this particular
+log file at all.
+
+### Arguments
+
+The use of arguments supports the ability to factor the problem into a
+single  high-level command.   This high-level  command may  become the
+focus  of  a  wider  generalization   where  system  names,  log  file
+conventions, and  in this case  email-recipients are decided,  and not
+written into operational code.
+
+Concise functions needn't re-name positional parameters. 
+
+### A top function
+
+This script's  author says it's successfully  used in a crontab  at 10
+minute intervals.
+
+In its un-factored form, it offers  too-great a temptation to copy the
+entire  thing,  make  a  few changes,  and  thus  proliferate  natural
+components in an un-maintainable fashion.   Not that evolution is bad,
+but with a  functional approach, each maintainer may  be challenged to
+discover ways to keep the general code working while introducing local
+distinct  criteria.   I'll  point  at   a  few  possibilities  in  the
+conclusion.
+
+## The example
+
+Let's take a look,  first at the script as presented,  and at the risk
+of  appearing daunting,  the  final  script here,  it  ready for  real
+maintenance.
+
+### The first and last scripts
+
+Here is the [working script][origscript], and here is the resulting
+script in [fully factored functions][lastfuncts]. 
+
+Again, don't be daunted.  In fourteen revisions, each with a specific
+goal in mind is presented with three pieces:
+
+* the current script,
+* the changes (from an __sdiff__ comparison), and
+* the resulting script.
+
+Each step is accompanied by an explanation, some direction to point
+out how you may inspect your work to take advantage of the
+modification, and a few shell tricks on how to bury the syntactic
+sugar.  In this printed form, the _resulting script_ is the same as
+the next step's _current script_.  An online training version of these
+operations may display separate screens for each of the three pieces.
+
+If you know how to open  these following pages in separate windows, do
+so.   If  not,  there  is  an  instruction  below,  before  proceeding
+step-by-step through the changes.
+
+
+### 1. Put the shortest condition first
+
+I'm a big fan of the  shell operators, **||** and **&&**, standing for
+the __OR__ and __AND__ as results of the _test_ operator.  The program
+author is  already using the __[[  ... ]]__ syntax for  test, so let's
+go.
+
+#### The changes
+
+Use  ' ||  { ...  } ',  collecting a  code block  which will  become a
+function.  note  logic change,  putting shorter block  first.  Replace
+the highlighted test, inverting the logic, collecting the hightlighted
+last lines, and noting the alternate code block has an `exit 1`
+
+![collect shorter code block](images/factor-001.jpeg)
+
+Here is that revision:
+
+    [[ -n ${x} ]]  || {
+        date 
+        find /tmp -xdev -size +2048 -ls |sort -r +6 
+        echo "END WITHOUT email $(date) on hostname=$HSTNM,$OSLVL" 
+        exit
+    }
+
+### 2. eliminate unneeded variables
+
+Here is the 
+[first modifications](https://dl.dropboxusercontent.com/u/66403621/shellfunctions/factor/txt/ebsdfwarn_002.txt)
+     
+Now introduce SYSID as concatenation of two variables which will later be eliminated.
+#### The changes
+
+introduce SYSID to replace two variable names
+
+<<(chg/ebsdfwarn_002.txt)
+
+### 3. eliminate a variable 
+after consolidating 
+[two variables into
+one,](https://dl.dropboxusercontent.com/u/66403621/shellfunctions/factor/txt/ebsdfwarn_003.txt)
+
+the next change uses dollar paren ... paren "$( ... )" logic, to
+isolate what had been a variable, into an expression:
+
+      [[ -n $(df -kt |grep 9[4-9]%) ]]  || {
+
+
+This replaces the 'x' variable with internal evaluation.  (a too-busy evaluation
+is an excellent place for a function)
+
+### 4. add warning-file variable
+
+this is a set-up prior to eliminating it
+      
+#### The current script
+}<<(txt/ebsdfwarn_004.txt)
+      
+#### The changes
+
+save the warning file name as a variable to be eliminated later.
+
+<<(dif/ebsdfwarn_004.txt)
+
+### 5. add a function 
+
+the **syswarn** function delivers on a promise
+      
+#### The current script
+<<(txt/ebsdfwarn_005.txt)
+      
+#### The changes
+
+here, adding the functions eliminates repeatedly appending to a file.
+
+<<(dif/ebsdfwarn_005.txt)
+
+### 6. remove a variable 
+
+begin removing SYSID variable by using it as a function argument
+      
+#### The current script
+<<(txt/ebsdfwarn_006.txt)
+
+#### The changes
+
+the SYSID variable is now the argument to the function.
+
+<<(dif/ebsdfwarn_006.txt)
+
+### 7. eliminate a variable, anticipate passing as arguments
+      
+eliminating MAILLIST, and replacing with literal arguments for a
+moment shows where the ultimate high-level command arguments, i.e.
+the destination email addresses will be supplied.
+
+#### The current script
+<<(txt/ebsdfwarn_007.txt)
+      
+#### The changes
+<<(dif/ebsdfwarn_007.txt)
+
+### 8. add functions using an argument
+
+Add **ok\_status** and  **warn\_status** functions taking same SYSID as argument.
+
+And eliminate HSTNM, OSLVL variables which collapse into SYSID.
+      
+#### The current script
+<<(txt/ebsdfwarn_008.txt)
+      
+#### The changes
+
+SYSID variable now uses functions returning appropriate values, and the 
+warning message is now within it's own function.
+
+<<(dif/ebsdfwarn_008.txt)
+
+### 9. eliminate warning warning variable
+
+Use warning file explicitly in the one place it is required,
+anticipating ENVIRONMENT variable at end.
+      
+#### The current script
+<<(txt/ebsdfwarn_009.txt)
+      
+#### The changes
+<<(dif/ebsdfwarn_009.txt)
+
+### 10. move warn_status function to the top of the list. no coding changes
+      
+#### The current script
+<<(txt/ebsdfwarn_010.txt)
+
+#### The changes
+<<(dif/ebsdfwarn_010.txt)
+
+### 11. re-invert the logic of the test, moving OK status to the end.
+      
+#### The current script
+<<(txt/ebsdfwarn_011.txt)
+      
+#### The changes
+<<(dif/ebsdfwarn_011.txt)
+
+### 12. eliminate SYSID as variable
+
+by passing the argument to the new function chk_status, issues either
+warning or OK.
+      
+#### The current script
+<<(txt/ebsdfwarn_012.txt)
+      
+#### The changes
+<<(dif/ebsdfwarn_012.txt)
+
+### 13. add shifted function
+
+This allows chk_status to pass SYSID ema1 ema2 ... emaN arguments
+      
+#### The current script
+<<(txt/ebsdfwarn_013.txt)
+      
+#### The changes
+<<(dif/ebsdfwarn_013.txt)
+
+### 14. move hard-coded warning file to ENVIRONMENT variable.
+
+Then, maybe the ... tee file ... may be altogether eliminated.
+      
+#### The current script
+<<(txt/ebsdfwarn_014.txt)
+      
+#### The changes
+<<(dif/ebsdfwarn_014.txt)
+
+###  and in conclusion

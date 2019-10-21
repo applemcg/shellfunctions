@@ -1,0 +1,249 @@
+
+<a name="shdoc----shell-doc-comments">
+# Shdoc -- SHell DOC comments
+</a>
+
+A few of the scripting and system programming languages have comment
+conventions for their functions.  [JavaDoc][] was possibly the
+earliest example.  Others instances are [pydoc][], [perldoc][],
+[YARD][], [RDOC][], [mkd][] , ... and, in general, [a
+sample][comparsion].
+
+As yet, there is no similar feature for the shell. Let's begin.
+
+<a name="new-concepts">
+## New Concepts
+</a>
+
++ document a function, lessons learned from Java, Perl, PYthon ...
++ shell array FUNCNAME
++ which function called this function
++ awk, simple usage
+
+The main objective here is to set a direction in documenting function 
+behavior.  The practice points towards modeling the other languages:
+to develop a useful Function API.
+
+<a name="new-functions">
+## New Functions
+</a>
+
++ myname - what is the name of my calling function
++ report_notfunction - report if not called by it's argument
++ report_notpipe - report if standard input is not on a pipe
++ report_usage - used by reporting functions
++ shdoc - _shdoc over a list of functions
++ _shdoc -- supplies output function format for colon-comments
++ shd_justcolon -- returns leading colon comments
+
+<a name="the-convention">
+## the convention
+</a>
+
+Since the `fbdy` function, using the _declare_ built-in, supplies
+the function body in a standard format, it's safe to use that as the
+conventional layout of a function.  With the standard layout, let's
+adopt the convention as these others do, that _the first comment lines
+after the function definition are special, and regarded as the
+function API interface_.
+
+<a name="the-first-functions">
+## the first functions
+</a>
+
+The main function is `shdoc`, using a few local utilities, and
+others which will be described below.
+
+    _shdoc () 
+    { 
+        : date: 2018-02-16;
+        report_notfunction $1 && return 1;
+        echo "function ${1}_doc {";
+        declare -f $1 | shd_justcolon;
+        echo "}"
+    }
+    shdoc () 
+    { 
+        : this is a shell doclib "shdoc" comment;
+        : an shdoc comment is the first ":"-origin lines;
+        : in the shell function, the rest being the executable.;
+        : 2019-01-28 use local _shdoc and produce declare -f format;
+        foreach _shdoc ${*:-$(myname)}
+    }
+    shd_justcolon () 
+    { 
+        : returns leading colon-comments from a SINGLE function;
+        report_notpipe && return 1;
+        awk '
+        NR > 2 {
+                 if ( $1 !~ /^:/ ) exit
+                 else              print
+               }
+        '
+    }
+    myname () 
+    { 
+        : ~ [n];
+        : returns name of caller OR callers caller ...;
+        : date: 2018-02-16;
+        echo ${FUNCNAME[${1:-1}]}
+    }
+
+So, `shdoc` takes an indefinite number of arguments, defaulting to
+itself, `myname`, calling `shd_each` for each of them.  While it's
+tempting to use the wild-card properties of the _declare_ built-in,
+this keeps the _awk_ code simpler.
+
+The `report_notfunction` is part of the **report** family of
+functions.  These functions are built to report on _assertion
+failures_.
+
+And, lastly, the `myname` function, using the _bash_ built-in array,
+FUNCNAME, returns the name of the calling function N levels up the
+stack.  It defaults to 1, returning the name of the immediate caller.
+
+Here is the result of running shdoc on the same functions.
+
+    $ shdoc ...
+
+    function _shdoc_doc {
+        : date: 2018-02-16;
+    }
+    function shdoc_doc {
+        : this is a shell doclib "shdoc" comment;
+        : an shdoc comment is the first ":"-origin lines;
+        : in the shell function, the rest being the executable.;
+        : 2019-01-28 use local _shdoc and produce declare -f format;
+    }
+    function shd_justcolon_doc {
+        : returns leading colon-comments from a SINGLE function;
+    }
+    function myname_doc {
+        : ~ [n];
+        : returns name of caller OR callers caller ...;
+        : date: 2018-02-16;
+    }
+
+Note, `shdoc` produces its comment in a function body by the same name
+with the *_doc* ending.
+
+<a name="utility-functions">
+## utility functions
+</a>
+
+Here are the **report_** functions, and a simple **trace_call**, and the
+rest of their sub-functions.
+
+    report_notfunction () 
+    { 
+        : returns: TRUE when 1st arg is NOT a function,;
+        : ... FALSE if it IS a function;
+        : date: 2018-02-16;
+        declare -f $1 > /dev/null && return 1;
+        report_usage $1 is NOT a function
+    }
+    report_notpipe () 
+    { 
+        : returns: TRUE when STDIN is NOT a pipe;
+        : ... FALSE if stdin is a pipe;
+        : date: 2018-02-16;
+        [[ -p /dev/stdin ]] && return 1;
+        report_usage is NOT reading a pipe
+    }
+    report_usage () 
+    { 
+        : writes: usage message of report_... caller FAILURE to STDERR;
+        : date: 2018-03-30;
+        echo USAGE $(myname 3): $* 1>&2
+    }
+
+Using **isfunction** is debatable.  My preference is to use meaningful
+function names, even where the built-in or command is so simple.
+
+And the result of `shdoc` on those functions:
+
+    function report_notfunction_doc {
+        : returns: TRUE when 1st arg is NOT a function,;
+        : ... FALSE if it IS a function;
+        : date: 2018-02-16;
+    }
+    function report_notpipe_doc {
+        : returns: TRUE when STDIN is NOT a pipe;
+        : ... FALSE if stdin is a pipe;
+        : date: 2018-02-16;
+    }
+    function report_usage_doc {
+        : writes: usage message of report_... caller FAILURE to STDERR;
+        : date: 2018-03-30;
+    }
+
+<a name="awk-digression">
+## awk digression
+</a>
+
+This is our first encounter with the **awk** programming language.  It's
+too useful in shell environments to not have brief mention in an application
+such as this.
+
+**Do this:** Read the [main article][awk].
+
+For our purpose, an awk script is made up of _pattern  { action }_ pairs.
+
+In its one use here, in the function `_shdoc`, the built-in *declare
+-f* puts the function body on the standard output to `shd_justcolon`
+using  [awk][], with its only pattern `NR > 2`, works on every
+line after the second, printing those lines which begin a
+colon (:). The script exits when the first non-leading colon is 
+encountered.
+
+The `_shdoc` function adds the leading and
+trailing context.  It may all have been done in awk.
+
+The purpose of this exercise is to show the complementary nature of
+awk to the shell.  It is much easier to read and understand the awk
+code than the equivalent shell expressions for the task.   There's no
+clear standard, but you will find a line between data-processing using
+**awk** and manipulating system objects, files, directories, and their
+relationships using the **shell** .
+
+<a name="activity">
+## Activity
+</a>
+
+1. write a shell function, using awk to print function names from
+   function definitions on the either the standard input or from named
+   files.  (hint: use the `cat ${*:--}` idiom and think, "what syntax
+   identifies a function name?" in the text)
+
+1. add sufficient **shdoc** to the function. does it need much more
+   than the requirements in the activity request?
+   
+<a name="references">
+## References
+</a>
+
+
+ [awk]:        https://en.wikipedia.org/wiki/AWK                       "Awk programming language"
+ [bashhist]:   http://www.catonmat.net/download/bash-history-cheat-sheet.txt        "Cheat sheet" 
+ [comparsion]: https://en.wikipedia.org/wiki/Comparison_of_documentation_generators
+ [javadoc]:    http://www.oracle.com/technetwork/java/javase/documentation/index-jsp-135444.html
+                                                                       "Oracle JavaDoc main page"
+
+ [jjhistory]:  https://www.youtube.com/watch?v=MbXofShhMv8         "Joe James on Command History"
+ [martyutube]: https://www.youtube.com/channel/UCL-4038hJH6JTCJKoqunFuQ "Marty's YouTube Channel"
+ [mkd]:        https://en.wikipedia.org/wiki/Mkd_(software)                  "mkd Wikipedia page"
+ [perldoc]:    http://perldoc.perl.org
+ [pydoc]:      https://en.wikipedia.org/wiki/Pydoc                              "Wikipedia Pydoc"
+ [rdoc]:       https://en.wikipedia.org/wiki/RDoc                        "RubyDoc Wikipedia page"
+ [yard]:       https://en.wikipedia.org/wiki/YARD_(software)
+
+
+1. [awk][] -- pattern matching, execution language
+1. [comparison][] -- comparison of documentation generators
+1. [javadoc][] -- how to document java function definitions
+1. [mkd][] 
+1. [perldoc][] -- how do document perl functions
+1. [pydoc][] -- how do document python functions
+1. [RDOC][]
+1. [YARD][] --
+

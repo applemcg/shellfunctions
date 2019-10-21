@@ -1,0 +1,71 @@
+#+TITLE:  Building the Manuscript
+#+INCLUDE: ./orgheader.org
+
+* Building the Manuscript
+
+Assembling the pieces of this book requires a bit of explanation.  
+
+The files in this manuscript ( Leanpub uses "manuscript" as the name
+of the source of the book ) are produced in sub-directories, named for
+each chapter.
+
+This arrangement simplifies identifying which chapter introduces a
+function, as well as a given shell feature.
+
+** The Layout                                              :chapter:markdown:
+
+Chapter sources are in ~manuscript/chap{01..NN}~ directories.  Each
+chapter will contain at least ( maybe at most? ) one Markdown file,
+the un-adorned name of the chapter.  For example, the directory
+'chap01' has *writeAshellFunction.md*.  That file is eventually turned
+into the file: *ch01_writeAshellFunction.md* in this directory.  This
+manuscript file must meet the requirements of the Leanpub Markdown
+syntax.
+
+** The Components
+*** source                                                  :command:include:
+
+A file in the chapNN directory may include file fragments to be included
+by the:
+
+#+BEGIN_SRC 
+     @include ... 
+#+END_SRC
+
+syntax of the *include* function.  The Markdown file in the chNN directory
+is pre-processed in the local *tomd* function by this *include* function.
+
+A few categories of files may be included, a shell function or command
+sequence (with *.sh* suffix), the result of a function or command
+sequence (with an *.out* sufix), or other source ( *.txt* ).
+
++ Suffix summary:
+
+    + md - markdown source, local and manuscript
+    + sh - shell function or command sequence
+    + out - command results
+    + txt - any other text
+
+Because I've a function *clean* whose routine use removed .out files,
+it's necessary to identify the files that don't need cleaning.  The *prepmake*
+function backs up those functions which need to persist
+
+#+BEGIN_SRC sh
+prepmake () 
+{ 
+    : date: 2018-07-28;
+    set -- *.md;
+    [[ $# -lt 1 ]] && return;
+    backup $* $(cat $* | grep  '@include' | field 2 | tee .tokeep)
+}
+#+END_SRC
+
+*** Tools 
+
+A shell library in bin/booklib holds the functions to build the chapters
+
+** How Made
+
+
+
+

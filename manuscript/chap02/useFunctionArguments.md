@@ -1,0 +1,159 @@
+<link rel="stylesheet" type="text/css" href="./mcgowan.css" />
+
+# Use Function Arguments
+
+In this chapter we add arguments when calling a function.  When
+calling, the tokens after the function name are called the
+_arguments_.  In the body of the function, the _positional parameters_
+( $1, $2, ... ) are assigned the respective argument values.
+
+## New Functions
+
++ dateArg - display arg and date format
++ date_arg - adorned dateArg
+
+## New Concepts
+
+These are the new concepts:
+
++ shell arguments - positional parameters
++ for loop 
++ bash brace expansion { ... }
+
+The **for** loop iterates over a range of aguments. In the exercise,
+we'll also demonstrate a bash shorthand for argument expansion.
+
+## the date command
+
+In the [last exercise](#writeAshellFunction) you used the **date**
+command in a very limited way.  You are probably aware the date
+command has a number of upper- and lower-case options.  Without going
+into great detail, an option to the **date** command is a plus sign
+(**+**) followed by any number of percent sign - single letter pairs.
+The format may contain any text; be sure to quote an argument which
+has embedded spaces. e.g.:
+    
+    $ date "+%a%b... and some message"
+
+Which in this case, produced
+
+    $ date "+%a%b... and some message"
+    FriJun... and some message
+    $
+    
+Since the command was run on a Friday in June.  Most letters have some
+useful effect.	
+	
+## The first argument 
+
+In this exercise, you will write a helper function to remind you what
+each of the many options return. e.g. *what does "date +%a" return*,
+and so forth.  Your function will display the letter argument, and the
+"date" result of using it.
+
+Since  the **date**  command permits  a formatting  option, you
+might have done  this: 
+
+    $ date +a: %a
+    a: Sat
+    $ ...
+
+Type that command.  What's the purpose?  You will see the value of a
+function argument, you can supply any letter to see its effect.
+Enter and use this function, by typing at your terminal:
+
+    $ dateArg () { date "+$s: %$1"; }
+    $ dateArg F
+
+which results in:
+    
+    $ dateArg F
+    F: 2019-05-19
+    $ ...
+
+In the **dateArg** function, the *$1* takes on the value of the first
+**positional parameter** passed to the function.  e.g.  in the next
+line, the first positional parameter is the letter **F**.  The
+formatted date option displays the argument, and with careful reading
+of the
+[date manual command](http://www.bing.com/search?q=unix+date+manual+command)
+[for example](http://unixhelp.ed.ac.uk/CGI/man-cgi?date), you see all
+the options displayed.
+
+The **dateArg** function first displays the option letter and then the
+date format associated with that letter.  Now type some arbitrary
+options, where some are likely to fail:
+    
+    $ dateArg xxx
+    $ dateArg one
+    $ dateArg foo
+    $ dateArg f
+    $ dateArg n
+    $ dateArg x
+    $ dateArg X	
+
+*What do you see?   Can you explain each one?*
+
+## Test them all 
+
+Now for the point of the exercise: testing every conceivable valid
+**date** option.  To do that, you  will need a new piece of shell
+syntax, the **for** loop, which looks like this:
+    
+  for *var* in *list* ; do *command(s) using var ...* ; done
+
+This will work: 
+     
+    $ for opt in {a..z}; do dateArg $opt; done 
+
+Type that command now.
+
+*What do you see?* 
+
+Now, some of your explanations come easier.  Since the day, the hour
+or the minutes many be the same number, some letter options may give
+the same result, and therefore, still be ambiguous.
+
+You've assigned the first positional parameter, and you can likely
+figure out how to deal with the second, third, ... etc.  Also, notice,
+if you haven't done this before, you've just assigned and used a
+**shell variable**, in this case the variable *opt*.  You assign it
+just by the name, and (in the **for** loop) substitute the value with
+a leading dollar sign: **$opt**.  In this case, **dateArg** is
+invoked with each of the lower case letters.  The function is dressed
+up a bit to show off the formatting for newlines, tabs, and note that
+some of the arguments return themselvs.
+
+Here is an example.  The command, and it's result:
+
+    $ for arg in {a..z}; do date_arg $arg; done
+    $ ...
+
+For extra credit: *How do you think you can test
+the upper-case letters as options?*
+
+## Questions
+
+1. the **date_arg** function demonstrates a useful step in unit
+   testing. How (and where) do you think it should be retained?
+
+## Next Steps 
+
+Think about this using the latest example.  How would you write a
+**foreach** function to simplify the whole command to this:
+     
+    $ foreach dateArg {a..z}
+	
+This last bit of syntax introduces bash
+[Brace Expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Expansions.html#Shell-Expansions)
+
+In the example, it expands to the lower case alphabet.  Another examples are quite common.
+
+    $ set {a,e,i,o,u}; echo $# $*
+	$ set -- file.{c,o); echo $# $*
+	
+Mail me if [you have questions](mailto:martymcgowan@alum.mit.edu?subject=useFunctionArguments)
+
+
+
+

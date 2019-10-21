@@ -1,0 +1,5 @@
+isfunction
+report_notcalledby
+report_notfunction
+report_usage
+trace_call

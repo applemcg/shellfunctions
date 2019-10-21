@@ -1,0 +1,28 @@
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    === 1 ===
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    === 2 ===
+    fbdy () 
+    { 
+        declare -f $1
+    }
+    === 3 ===
+    fbdy () 
+    { 
+        declare -f ${1:-fbdy}
+    }
+    === 4 ===
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    fbdy () 
+    { 
+        declare -f ${*:-fbdy}
+    }

@@ -1,0 +1,94 @@
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    today () 
+    { 
+        date +%Y%m%d
+    }
+    dateArg () 
+    { 
+        date "+$1: %$1"
+    }
+    date_arg () 
+    { 
+        date "+$1: <%$1>"
+    }
+    foreach () 
+    { 
+        for arg in ${@:2};
+        do
+            $1 $arg;
+        done
+    }
+
+       shdoc () 
+       { 
+           : this is a shell doclib "shdoc" comment;
+           : an shdoc comment is the first ":"-origin lines;
+           : in the shell function, the rest being the executable.;
+           for f in ${*:-$(myname)};
+           do
+               shd_each $f;
+           done
+       }
+   
+
+       shd_each () 
+       {
+           : recovers the shdoc comment from a function.
+	   : 
+           report_notfunction $1 && return 1;
+           report_notcalledby shdoc && return 2;
+           trace_call $*;
+           printf "%s_doc ()\n{\n" $1;
+	   shd_recover $1
+           echo "}"
+       }
+       shd_recover ()
+       {
+           : recovers the shdoc comment from a function.
+	   : so long as the function has leading colon lines,
+	   : these are treated as comments
+           report_notfunction $1 && return 1;
+           trace_call $*;
+           declare -f $1 | awk '
+              NR > 2 {
+                       if ( $1 !~ /^:/ ) exit
+                       else              print
+       	      }
+            ';
+       }
+       myname () 
+       { 
+           echo ${FUNCNAME[${1:-1}]}
+       }
+       isfunction () 
+       { 
+           trace_call $*;
+           declare -f $1 > /dev/null
+       }
+
+       report_notcalledby () 
+       { 
+           : promote to auxlib when satisfied;
+           set ${1:-/dev/null} $(myname 3) non-Existant-function;
+           [[ $2 == $1 ]] && return 1;
+           report_usage was NOT called by $1.
+       }
+
+       report_notfunction () 
+       { 
+           set ${1:-/dev/null};
+           isfunction $1 && return 1;
+           report_usage $1 is NOT a Function
+       }
+
+       report_usage () 
+       { 
+           echo USAGE $(myname 3) $* 1>&2
+       }
+       trace_call () 
+       { 
+           echo $* 1>&2
+       }

@@ -1,0 +1,46 @@
+
+ 
+
+
+Version
+-------
+tested H, ttb, H w/ ttb -- trailing space
+
+tested tolower, namify w/ ttb tolower, H with namify
+
+tested dashify, namify w/dashify ttb tolower
+
+tested --define markua, ifdef 
+
+============================================
+
+<a name="first-header">
+One First Header
+</a>
+This is lower case of First Header: first header
+
+<a name="another-header">
+##  Another Header
+</a>
+
+<a name="third-level">
+###  third level
+</a>
+
+
+{some text}
+
+{some Other text}
+
+{one last try}
+
+<a name="header-with-trailing-space">
+#  Header with trailing space 
+</a>
+
+
+{another-trailing-blank}
+
+{Another---Trailing-Blank}
+
+test.m4, 26, /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/m4

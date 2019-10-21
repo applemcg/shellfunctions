@@ -1,0 +1,12 @@
+
+
+extract_new  | onlyChanged functionConcept.txt
+
+#   run_this date_arg F
+#   cprove date "+a: %a" | fourspaces > dateA.run
+#   eprove "for arg in {a..z}; do date_arg \$arg; done" | fourspaces > dateAZ.run
+
+mkht
+
+
+

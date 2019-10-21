@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>shellfunctions &#x2013; Book Work</title>
+<!-- 2017-02-01 Wed 13:49 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Marty McGowan" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./style.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">shellfunctions &#x2013; Book Work</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Pseudo-code:</a></li>
+<li><a href="#sec-2">2. thoughs, discussion</a></li>
+<li><a href="#sec-3">3. and away we go</a></li>
+</ul>
+</div>
+</div>
+<p>
+Challenge: tool to capture each section
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Pseudo-code:</h2>
+<div class="outline-text-2" id="text-1">
+<ol class="org-ol">
+<li>at each step, link (<b>ln</b>) a subset of the functions to <i>booklib</i>
+</li>
+<li>use a function ch{NN}fun which:
+<ul class="org-ul">
+<li>sources the one before it, and
+</li>
+<li>echo's its own new names, e.g.
+</li>
+</ul>
+<pre class="example">
+ch03fun () { source ch02fun; myfbdy functions introduced in chapter3; }
+</pre>
+</li>
+
+<li>build this from a table:
+</li>
+</ol>
+
+
+<pre class="example">
+ORDER  CHAPTER DOES    FUNCTIONS
+-----  ------- ----    ---------  
+ nn      name  add     introduced in chapter3
+ ..      ....    ...   .............
+</pre>
+
+<ul class="org-ul">
+<li>where the first chapter has no prior chapter.
+</li>
+<li>use an awk script
+</li>
+<li>where the chapters are sorted on their ORDER, so that
+</li>
+<li>each chapter only needs to know it's predecessor 
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> thoughs, discussion</h2>
+<div class="outline-text-2" id="text-2">
+<ol class="org-ol">
+<li>this leaves open the question of updating a function in a later chapter.  
+</li>
+
+<li>it seems that a function updated in a later chapter, then must have
+that unique body stored in an accessible place
+</li>
+
+<li>in this picture, a function like:
+
+<pre class="example">
+chNNsrc () { 
+     function introduced { ...; }
+     ....
+     }
+</pre>
+
+<p>
+so therefore, <i>myfbdy</i> would execute its caller's <b>src</b>, and display 
+the bodies of it's arguments!
+</p>
+
+<p>
+and the name of the DOES operation to delete could be <i>delete,
+unset, remove</i>,&#x2026; pick one.
+</p>
+</li>
+
+<li>A chapter adding and deleting functions could have the same sort order
+since a function to be removed would be of no use at any time in the chapter.
+If it were, the removal could be deferred to the next chapter.
+</li>
+
+<li>this brings up the possibility of two tables"
+
+<pre class="example">
+chapter:   ORDER, CHAPTER
+</pre>
+
+<p>
+and 
+</p>
+<pre class="example">
+function:  CHAPTER, DOES, FUNCTIONS
+</pre>
+
+<p>
+but that seems to be way ahead of ourselves
+</p>
+</li>
+
+<li>Operation
+</li>
+
+<li>the awk script generates the chNNsrc functions into a library
+</li>
+
+<li>a script further checks that ADDed functions are in their 
+respective source files
+
+<p>
+e.g. 
+</p>
+
+<pre class="example">
+$ unset           # the World
+$ source ch02src  # loads chs 1 and 2
+$ functions       &gt; .ch02.txt
+$ ch03src         # adds the  ch03 functions
+$ functions | comm -23 - .ch02.txt | compare_to_new03
+</pre>
+</li>
+
+<li>requiring the chNNsrc functions to unset the deleted functions
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> and away we go</h2>
+<div class="outline-text-2" id="text-3">
+<ol class="org-ol">
+<li>first the table
+
+<ul class="org-ul">
+<li><a href="./chfun.txt">./chfun.txt</a>
+</li>
+</ul>
+</li>
+</ol>
+
+
+<ol class="org-ol">
+<li>then the scripts
+
+<ul class="org-ul">
+<li><a href="./chfun.awk">chfun.awk</a>
+</li>
+<li><a href="./chsrc.awk">chsrc.awk</a>
+</li>
+</ul>
+</li>
+
+<li>and library functions
+
+<ul class="org-ul">
+<li><a href="./mklib">mklib</a>
+</li>
+</ul>
+</li>
+
+<li>and the as-built chLIB
+
+<ul class="org-ul">
+<li><a href="./challlib">challlib</a>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Marty McGowan</p>
+<p class="date">Created: 2017-02-01 Wed 13:49</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

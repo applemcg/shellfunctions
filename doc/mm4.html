@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-05-26 Sun 13:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Marty McGowan" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge2c773a">1. MM4 &#x2013; Markdown with M4&#xa0;&#xa0;&#xa0;<span class="tag"><span class="leanpub">leanpub</span>&#xa0;<span class="markua">markua</span>&#xa0;<span class="markdown">markdown</span>&#xa0;<span class="gruber">gruber</span></span></a>
+<ul>
+<li><a href="#org02b2258">1.1. What is MM4&#xa0;&#xa0;&#xa0;<span class="tag"><span class="m4">m4</span></span></a></li>
+<li><a href="#org2a889c1">1.2. How Achieved</a>
+<ul>
+<li><a href="#org4dc9d73">1.2.1. Two Features to Model&#xa0;&#xa0;&#xa0;<span class="tag"><span class="include">include</span>&#xa0;<span class="header">header</span>&#xa0;<span class="name">name</span>&#xa0;<span class="awk">awk</span>&#xa0;<span class="anchor">anchor</span></span></a></li>
+<li><a href="#orge3eaf50">1.2.2. The Solution</a></li>
+<li><a href="#orgcec3e5f">1.2.3. The Header Macro</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge2c773a" class="outline-2">
+<h2 id="orge2c773a"><span class="section-number-2">1</span> MM4 &#x2013; Markdown with M4&#xa0;&#xa0;&#xa0;<span class="tag"><span class="leanpub">leanpub</span>&#xa0;<span class="markua">markua</span>&#xa0;<span class="markdown">markdown</span>&#xa0;<span class="gruber">gruber</span></span></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="http://leanpub.com">Leanpub</a> is now (since 2018) using a flavor of Markdown they call
+Markua.  It is upwardly compatible with <a href="https://daringfireball.net/projects/markdown/">Gruber Markdown</a> with the sole
+exception that it doesn't accept embedded HTML.  MM4 solves the
+problem, accepting the Markua view that those HTML constructs that
+Gruber doesn't handle can be fit into a simplifying syntactic
+framework.  The MM4 solution is an author-centric view, allowing the
+user to transform their current Gruber Markdown on an as-needed basis
+to Markua.  The practice established here adopts the view that neither
+is the last word in text editing and formatting.
+</p>
+</div>
+
+<div id="outline-container-org02b2258" class="outline-3">
+<h3 id="org02b2258"><span class="section-number-3">1.1</span> What is MM4&#xa0;&#xa0;&#xa0;<span class="tag"><span class="m4">m4</span></span></h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+MM4 is a shell function, wrapping the m4 command, with a set of
+definitions to emit either Gruber Markdown or Markua with a
+command-line option.  The design interface at the moment is:
+</p>
+
+
+<pre class="example">
+$ mm4 [--define=_gruber] file ...  # OR
+$ mm4 --define=_markua file ...  
+
+</pre>
+
+
+<p>
+The square brackets indicate the default format. Either the Gruber or
+Markua format of the output shows up on the <b>stdout</b>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2a889c1" class="outline-3">
+<h3 id="org2a889c1"><span class="section-number-3">1.2</span> How Achieved</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+This is the function.  It uses the <code>m4</code> command, a macro processor which
+converts user definitions which map text argument into the desired format
+</p>
+
+<pre class="example">
+mm4 () 
+{ 
+    cmd=${1:-m4};
+    shift;
+    ${cmd} $(include)/{hacks,underscore,local}.m4 $*
+}
+
+</pre>
+
+<p>
+At the moment, there are two places where I'm reprocessing text in a
+near-Gruber format into a working Gruber format.
+</p>
+</div>
+
+<div id="outline-container-org4dc9d73" class="outline-4">
+<h4 id="org4dc9d73"><span class="section-number-4">1.2.1</span> Two Features to Model&#xa0;&#xa0;&#xa0;<span class="tag"><span class="include">include</span>&#xa0;<span class="header">header</span>&#xa0;<span class="name">name</span>&#xa0;<span class="awk">awk</span>&#xa0;<span class="anchor">anchor</span></span></h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+First, Gruber doesn't include files from other sources into the output
+stream.  Since I'm writing the Shell Functions book at the moment, there
+are places where I'd like to include a shell fragment, followed by it's
+resulting output.  A few years ago I'd picked up a generic include processor,
+whose syntax admits <code>@include ../path/to/thisfile.suf</code> for example.  Of course,
+it's a recursive process allowing nested includes. 
+</p>
+
+<p>
+Also, Gruber doesn't do anything special with the names or labels of it's
+sections.  So, I'd pre-process those as well, turning something like
+</p>
+
+<pre class="example">
+### Level Three Header
+
+</pre>
+
+<p>
+into 
+</p>
+
+<pre class="example">
+&lt;a name="level-three-header"&gt;
+### Level Three Header
+&lt;/a&gt;
+
+</pre>
+
+<p>
+which allows in-document reference to this section.  At the moment, since
+Markua is a work in progress, here's what this would look like in Markua:
+</p>
+
+<pre class="example">
+ {id: three-level-header}
+### Level Three Header
+
+</pre>
+
+<p>
+In the next paragraph in the <a href="https://leanpub.com/markua"> Markua Manual</a>, it says:
+</p>
+
+<p>
+&gt; This syntax is intended to be reminiscent of HTML anchor tags, not of <code>h1</code> titles in Markua
+</p>
+
+<p>
+At the moment, I handle this with a shell function <code>labify</code>, basically
+an <b><b>awk</b></b> script to recognize the leading ##s and emit the prior text
+above.
+</p>
+
+<p>
+Since my threshold of pain is three, these two instances suggest the
+threshold isn't far off in upgrades to Markdown which anticipate
+Markua.   
+</p>
+
+<p>
+At the moment, these repairs are in separate locations in the process,
+both in terms of implementation language and processes.  Here's the function
+which MaKes the HyperText:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #0000ff;">mkht</span> ()
+{
+     : convert a {default, the newest} Markdown into HTML copy
+     <span style="color: #483d8b;">set</span> -- ${<span style="color: #a0522d;">1</span>:-$(<span style="color: #ff00ff;">ls</span> -t *.md| sed 1q)}
+     <span style="color: #483d8b;">set</span> $<span style="color: #a0522d;">1</span>  ../ch$(<span style="color: #ff00ff;">chno</span>)_$<span style="color: #a0522d;">1</span> ${<span style="color: #a0522d;">1</span>%.md}<span style="color: #483d8b;">.</span>{html,inc}
+     app_trace $<span style="color: #a0522d;">*</span>
+     backup_lib mklib
+     newest $<span style="color: #a0522d;">3</span> $<span style="color: #a0522d;">1</span> *.sh *.run $(<span style="color: #ff00ff;">llib</span>)/references.txt &amp;&amp; <span style="color: #a020f0;">return</span>
+     app_trace  <span style="color: #8b2252;">"about to: markdown $1 &gt; $2"</span>
+     include $<span style="color: #a0522d;">1</span> | tee $<span style="color: #a0522d;">4</span> | labify | tee $<span style="color: #a0522d;">2</span> |  markdown - &gt; $<span style="color: #a0522d;">3</span>
+}
+</pre>
+</div>
+
+<p>
+This is the crucial line:
+</p>
+
+<pre class="example">
+include $1 | tee $4 | labify | tee $2 |  markdown - &gt; $3
+
+</pre>
+
+<p>
+The second <code>set</code> command assigns these positional parameters:
+</p>
+
+<ol class="org-ol">
+<li><b>somename</b>.md</li>
+<li>../chNN_ <b>somename</b>.md</li>
+<li><b>somename</b>.html</li>
+<li><b>somename</b>.inc</li>
+</ol>
+
+<p>
+The include process resolves the <code>@include</code> directives in the *.md file,
+leaving the result in the *.inc file, adding the <code>name</code> labels, leaving the
+result in the parent directory, where it becomes the source of the Leanpub
+source document, and further runs (Gruber) <code>markdown</code> on the input, with the
+result in the local *.html file
+</p>
+
+<p>
+The <code>newest</code> command, a bit of <code>make</code> process expect the *.html file to be the 
+newest of its arguments, the *.md file, any *.{sh,run} files in the directory
+and a file of references in the local library.
+</p>
+
+<p>
+Using mm4 to combine these two repairs in a single process would look like:
+</p>
+
+<pre class="example">
+mm4 $1 | tee $2 | markdown - &gt; $3
+
+</pre>
+
+<p>
+Not only to simplify upgrading the process to include other features.
+</p>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-orge3eaf50" class="outline-4">
+<h4 id="orge3eaf50"><span class="section-number-4">1.2.2</span> The Solution</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+The <code>@include</code> feature is directly absorbed into <b>mm4</b> with the
+<code>_include</code> m4 builtin.  If you are somewhat familiar with m4, you know
+about it's <code>include</code> builtin.  mm4 uses a set of hacks which map all
+the builtin definitions onto an underscore prefix-named definition.
+This frees up ordinary and common programming words to not be consumed
+by the processor.
+</p>
+
+<p>
+The <code>labify</code> feature will have to find it's way into the definitions.
+It's interface will look like this:
+</p>
+
+<pre class="example">
+_labify( text to labify[, optional trailing text])
+
+</pre>
+
+<p>
+A header macro which whose interface is:
+</p>
+
+<pre class="example">
+_H( [level,] Heading text)
+
+</pre>
+
+<p>
+Since <code>labify</code> is probably trivial (in Markua, certainly) the <code>header</code>
+macro needs more careful specification.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcec3e5f" class="outline-4">
+<h4 id="orgcec3e5f"><span class="section-number-4">1.2.3</span> The Header Macro</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+The last argument is the text to display. An optional first argument
+specifies the heading <b>level</b>.   Here's a first cut at the requirements
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">level</th>
+<th scope="col" class="org-left">means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">absent, blank, or empty</td>
+<td class="org-left">use current header level</td>
+</tr>
+
+<tr>
+<td class="org-left">N, e.g. 1,2,3</td>
+<td class="org-left">Nth level header</td>
+</tr>
+
+<tr>
+<td class="org-left">+, "push"</td>
+<td class="org-left">Increment the level</td>
+</tr>
+
+<tr>
+<td class="org-left">-, "pop"</td>
+<td class="org-left">decrement the level by one</td>
+</tr>
+
+<tr>
+<td class="org-left">-N</td>
+<td class="org-left">decrement the level by N</td>
+</tr>
+
+<tr>
+<td class="org-left">"recall" (speculative)</td>
+<td class="org-left">increment the level counter at this level</td>
+</tr>
+
+<tr>
+<td class="org-left">#{1,N)   (an RE)</td>
+<td class="org-left">Nth Level, assumes Markdown/Markua</td>
+</tr>
+
+<tr>
+<td class="org-left">*{1,N)   (an RE)</td>
+<td class="org-left">Nth Level, assumes OrgMode</td>
+</tr>
+
+<tr>
+<td class="org-left">the very first encounter</td>
+<td class="org-left">Assume First Level</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+A question remains: are the <code>push</code> and <code>pop</code> operations, pre- or post-
+operations.  For the moment, I think both push is a POST operation,
+and pop is PRE.  It may be possible for a user to specify, or have
+other words, like "first", "last", at a given level, where "recall"
+would be an alternate value of "first".
+</p>
+
+<p>
+The absent, blank, or empty level would allow a header, named HDR, say
+to be used list this:
+</p>
+
+<pre class="example">
+HDR( #, First first-level header)
+HDR( Second first-level header)
+HDR( Third first-level header)
+HDR( Fourth first-level header)
+
+</pre>
+
+<p>
+Then, suppose you were about to import a bunch of headers from 
+a file discussing 3rd level properties;
+</p>
+
+<pre class="example">
+HDR( one good thing)
+HDR( a better thing)
+HDR( the best thing)
+HDR( the absolute best)
+
+</pre>
+
+<p>
+Simply insert the latter file into the buffer of the first:
+</p>
+
+<pre class="example">
+HDR( #, First first-level header)
+HDR( Second first-level header)
+HDR( push, Third first-level header)
+HDR(    one good thing)
+HDR(    a better thing)
+HDR(    the best thing)
+HDR(    the absolute best)
+HDR( pop, Fourth first-level header)
+
+</pre>
+
+<p>
+The importance of a consistent header treatment allows
+the repeated use, not just the copy-paste operation, of 
+this approach
+</p>
+
+<pre class="example">
+HDR( #, First first-level header)
+HDR( Second first-level header)
+HDR( push, Third first-level header)
+INCLUDE( discussing 3rd level properties.txt)
+HDR( recall, Fourth first-level header)
+
+</pre>
+
+<p>
+Note, use of "recall" is probably indicated in this case, 
+since the author of the enclosing file needn't know the
+structure of the included file.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Marty McGowan</p>
+<p class="date">Created: 2019-05-26 Sun 13:35</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

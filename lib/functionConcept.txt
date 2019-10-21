@@ -1,0 +1,37 @@
+concept 01	 call the function,
+concept 01	 show the function text.
+concept 01	 use features of the __date__ command
+concept 01	 write a function on the command line in different formats,
+concept 02	 bash brace expansion { ... }
+concept 02	 for loop 
+concept 02	 shell arguments - positional parameters
+concept 03	 set and use an alias
+concept 03	 set positional parameters
+concept 03	 use *eval* to evaluate deferred expression
+concept 03	 use a numeric parameter
+concept 03	 use default parameters
+concept 03	 use wild-card parameters
+concept 04	 avoid using a local variable in a function
+concept 04	 re-use a command from the command history
+concept 04	 use expanded positional parameter features
+concept 05	 awk, simple usage
+concept 05	 document a function, lessons learned from Java, Perl, PYthon ...
+concept 05	 shell array FUNCNAME
+concept 05	 which function called this function
+concept 06	 define a function by adding the function syntax, 
+concept 06	 identify two editor modes to edit command history
+concept 06	 shell command history
+concept 06	 use command history numbers to recall a previous command
+function 01	 hello - programmers birth announcement
+function 01	 today - from the date command.
+function 02	 dateArg - display arg and date format
+function 02	 date_arg - adorned dateArg
+function 03	 fbdy - display a function
+function 04	 foreach - execute function on args ...
+function 05	 _shdoc -- supplies output function format for colon-comments
+function 05	 myname - what is the name of my calling function
+function 05	 report_notfunction - report if not called by it's argument
+function 05	 report_notpipe - report if standard input is not on a pipe
+function 05	 report_usage - used by reporting functions
+function 05	 shd_justcolon -- returns leading colon comments
+function 05	 shdoc - _shdoc over a list of functions

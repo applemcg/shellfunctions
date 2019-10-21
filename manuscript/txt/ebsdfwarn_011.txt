@@ -1,0 +1,30 @@
+syswarn () { 
+echo "\n$(date) hostname=$1 NEEDS ATTENTION:" 
+echo "\n\r\rWARNING these file systems are approaching being full on hostname=$1:\r"
+echo "\r" 
+echo "Filesystem 1024-blocks Used Free %Used Mounted on\r"
+echo "${x}\r" 
+echo "\r"
+echo ">>>>>>>>>> THIS CAN POTENTIALLY CAUSE LOSS OF DATA <<<<<<<<<\r\r" 
+find /tmp -xdev -size +2048 -ls |sort -r +6
+}
+warn_status () {
+echo "END WITH email $(date) on hostname=$1" 
+mailsub="!!!!! CHECK %USED FOR FILE SYSTEMS ON hostname = $1 !!!!!"
+syswarn "$1" | tee "/ebs/misc/tmp/ebsdfwarn.out" | mail -s "$mailsub" "thom email@removed email@removed"
+}
+ok_status () {
+date 
+find /tmp -xdev -size +2048 -ls |sort -r +6 
+echo "END WITHOUT email $(date) on hostname=$1" 
+}
+
+SYSID="$(hostname)-ebs505,$(oslevel -r)"
+
+[[ -n $(df -kt |grep 9[4-9]%) ]]  || {
+ok_status "$SYSID"
+exit
+}
+warn_status "$SYSID"
+exit 1
+

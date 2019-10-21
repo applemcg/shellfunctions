@@ -1,0 +1,207 @@
+
+# Inspect a function body 
+
+In this chapter, we'll look at specific details of functions, particularly
+dealing with arguments, and write a function to display functions.
+
+## New Concepts
+
+In this exercise, you will use these concepts:
+
++ set positional parameters
++ use default parameters
++ use *eval* to evaluate deferred expression
++ use wild-card parameters
++ use a numeric parameter
++ set and use an alias
+
+For the time being, think of an `alias` as a short-hand for a function.
+
+## New Functions
+
+Recall, in a [previous exercise](#writeAshellFunction) you
+learned how to inspect a function body.  And you were asked, *what
+would you name a function to display a **F**unction **B**o**DY**.*
+
+Did I give it away.  That's what I called it:  **fbdy**.
+
+To review:
+
+    $ declare -f hello    # shows the hello function
+
+If you've logged off and logged back in since the previous exercise,
+you've lost the function definition and will have to re-enter it.  In
+a [future exercise](#collectSaveandReuseFunctions), you will learn a
+simple means to recover your work from day-to-day, from one command
+session to the next.
+
++ fbdy - display a function
+
+## More about arguments 
+
+In addition to the numbered **positional parameters**: 1, 2, 3, ...
+you will learn of other parameter features: 
+
++ how to express positional parameters
++ report the number of positional parameters, and 
++ assign a **default value** to a positional parameter.  
+
+Here's how to **set** positional parameters.
+
+**Enter these commands** at your terminal window:
+
+
+     set a b c       #  set positional parameters to "a b c"
+     echo $*         #  show them
+     echo $#         #  how many?
+     echo here is One: $1
+     eval echo here is the Last: \$$#
+     echo here is Two: $2
+     echo here is Two: ${2:-two}
+     echo here is Four: ${4:-four}
+     alias ea="echo $# $*"
+     ea
+
+In the "here is the Last" example two things happened. In order to inspect
+the contents of the last positional parameter. you could have typed
+
+     $ echo here is the Last: $3
+
+In general, without knowing the number of positional parameters,
+you need to find the number of the last parameter.  Having found it
+you can then evaluate it.  The shell idiom:
+
+     $ eval .... \$ ...
+
+where the leading backslash defers evaluation of the positional
+parameter ${ ... } until the command has been parsed, the dollar-sign
+is escaped, or deferred for the subsequent evaluation, triggered by
+the preceending *eval* built-in.  In this case
+
+     $ eval echo ... \$$#      becomes
+     $      echo ...  $3 
+
+Check your results here:
+
+    a b c
+    3
+    here is One: a
+    here is the Last: c
+    here is Two: b
+    here is Two: b
+    here is Four: four
+    3 a b c
+
+### experiments
+
+Experiment with other arguments to the **set** command.  Single-letter
+options also treat following arguments as **positional parameters**,
+for example:
+
+      $ set -x         # turns on command tracing
+      $  ...           # execute some commands, before you 
+      $ set +x         # turn it off
+	  $ set +x a b c   # also sets three parameters
+
+Use the _set_ builtin to set the positional parameters.  Experiment
+with these examples
+
+      $ set one Two seven     # replaces any previous setting, as does
+      $ set $3 four five      # but keep one, add others
+	  $ set $* six seven      # keep all
+	  $ set one $*            # in a different order
+
+Future chapters explore the situations where the "--" option flag is
+required.
+
+In these examples the trailing *sharp (#)* is the shell comment
+syntax.  And more about shell comments later as well.
+
+### questions 
+
+In the commands you entered at the terminal, what does the: 
+
+* *asterisk ($\*) mean?*
+* *sharp/hash ($#) mean in this context?*
+* *eval command do?*  hint: omit it from the command line.
+
+In the next section we will use the positional parameters within
+a function.
+
+## The function body 
+
+You can take advantage of this information to write a function that
+returns a function.  As you write this function, think of *what is a
+good **default** argument?*.  Enter these, a line at a time where the
+_echo === N ===_ are inserted as benchmarks, and may be omitted:
+
+
+    declare -f hello             # as before
+    echo === 1 ===
+    fbdy () { declare -f $1; }   # the simple version
+    fbdy hello                   # same as before
+    echo === 2 ===    
+    fbdy fbdy                    # no kidding!, so why not ...
+    echo === 3 ===    
+    fbdy () { declare -f ${1:-fbdy}; }   # so ...
+    fbdy                         # shows how to do it!, and
+    echo === 4 ===        
+    fbdy () { declare -f ${*:-fbdy}; }      # permits ...
+    fbdy hello fbdy              # whew, let's take a break
+
+
+Here are the results for the function body:
+
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    === 1 ===
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    === 2 ===
+    fbdy () 
+    { 
+        declare -f $1
+    }
+    === 3 ===
+    fbdy () 
+    { 
+        declare -f ${1:-fbdy}
+    }
+    === 4 ===
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    fbdy () 
+    { 
+        declare -f ${*:-fbdy}
+    }
+
+Take note of the use of a default parameter in the highlighted
+example.  After using a single argument, the following example takes
+advantage of the *wild-card ($*)*, which expands into all the
+arguments, or if none, then the default.
+
+You may want to search _bash parameter expansion_
+
+### questions 
+
+* *were you able to follow exercise?*
+
+* *did you understand each step?* if not,
+  [Contact Me](mailto:martymcgowan@alum.mit.edu?subject=function_body)
+* *what does the final **fbdy** do with no arguments?*
+
+## assessment 
+
+Review, if necessary, your understanding of:
+
+* *wild-card parameters*
+* *default parameters*
+* *setting positional parameters*
+* how the function body is displayed.  you might search _bash shell declare_.
+

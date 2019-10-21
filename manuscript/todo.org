@@ -1,0 +1,59 @@
+
+
+* Tasks
+
+** General Features
+
+*** TODO email links 
+   from [comment](mailto:...) to whatever works.  LMF or ?? 
+
+*** TODO insert local tags
+
+*** TODO Collect external references
+
+*** TODO after first declare -f
+
+show equivalence of entering command on one line, note necessity of
+trailing/separating semi-colon
+
+*** TODO eliminate in-line HTML in favor of Markua?!
+
+     make in a option, default is -h as in HTML, optional -m is Markua
+
+     e.g.  <a name="..."> ... </a> or ???
+
+** Sections
+
+*** Chapter 1
+
+**** TODO include GNU Shell Functions
+
+    https://www.gnu.org/software/bash/manual/html_node/Shell-Functions.html#Shell-Functions
+
+**** TODO More on that Later
+
+**** TODO "today" on one line
+
+**** TODO positional parameters
+
+    myfunc a b c ...
+
+    a is assigned to $1, b to $2 ...
+ 
+    include a link at this point.
+
+    myfunc "two words" x y z
+
+    $1 is now "to words", and if expecting spaces, 
+     used as double-quoted "$1"  
+
+*** Chapter 3
+
+**** TODO unexpanded INCLUDE
+
+
+*** Chapter 5, ff
+
+**** TODO where did they go?
+
+  gobbled up by the inline HTML

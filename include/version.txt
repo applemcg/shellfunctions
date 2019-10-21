@@ -1,0 +1,16 @@
+Version
+-------
+tested H, ttb, H w/ ttb -- trailing space
+
+tested tolower, namify w/ ttb tolower, H with namify
+
+tested dashify, namify w/dashify ttb tolower
+
+tested --define markua, ifdef
+
+tested {markdown,markua}.m4 separate files, default
+
+tested reverse, with recursive 0, repeeated with N, 1, 0, and blank args
+
+===================================================
+

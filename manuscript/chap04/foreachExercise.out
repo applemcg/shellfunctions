@@ -1,0 +1,19 @@
+    # foreach dateArg ...
+    a: Fri
+    e: 29
+    i: i
+    o: o
+    u: 5
+    # fbdy foreach dateArg
+    foreach () 
+    { 
+        for arg in ${@:2};
+        do
+            $1 $arg;
+        done
+    }
+    dateArg () 
+    { 
+        date "+$1: %$1"
+    }
+    # history lesson

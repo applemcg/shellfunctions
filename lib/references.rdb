@@ -1,0 +1,33 @@
+name	url	comment	lead	trail
+-----	-----	-------	----	------
+online	http://mcgowans.org/pubs/marty3/commonplace/
+YouTube	http://bit.ly/shelfcl
+Bash	http://bit.ly/bashref -- reference manual
+Slides	http://bit.ly/??
+myself	http://wikitree.com/wiki/McGowan-474
+Helen Ralicki	http://wikitree.com/wiki/Szambelan-1
+home page	http://mcgowans.org/pubs/marty3/
+commonplace	http://mcgowans.org/pubs/marty3/commonplace/
+Cubs Corner	http://mcgowans.org/pubs/cubscorner/
+Martinis	http://mcgowans.org/pubs/martinis/
+dzslides	http://paulrouget.com/dzslides/	dzslides	-- a modern use of HTML5 to produce intereactive slides
+dzwrap	https://github.com/applemcg/dzwrap/blob/master/README.md	dzwrap	-- htdefs first user.
+htdefs	https://github.com/applemcg/htdefs	htdefs	-- hypertext definitions
+m4 macro	https://en.wikipedia.org/wiki/M4_(computer_language)	m4	-- a general-purpose macro processor
+markdown	http://daringfireball.net/projects/markdown/	markdown	-- a lightweight markup language
+roff	https://en.wikipedia.org/wiki/Troff	nroff, troff	-- New, and Text Run-off processors
+pandoc	http://pandoc.org	pandoc	-- a universal document converter
+SHELF	https://github.com/applemcg/shelf/blob/master/shelf.org	SHELF standard  shell functions -- see the
+bash strings	http://www.tldp.org/LDP/abs/html/string-manipulation.html	string manipulation
+awk	https://en.wikipedia.org/wiki/AWK                       "Awk programming language"
+bashhist	http://www.catonmat.net/download/bash-history-cheat-sheet.txt        "Cheat sheet" 
+comparison	https://en.wikipedia.org/wiki/Comparison_of_documentation_generators
+javadoc	http://www.oracle.com/technetwork/java/javase/documentation/index-jsp-135444.html	"Oracle JavaDoc main page"
+jjhistory	https://www.youtube.com/watch?v=MbXofShhMv8         "Joe James on Command History"
+martyutube	https://www.youtube.com/channel/UCL-4038hJH6JTCJKoqunFuQ "Marty's YouTube Channel"
+mkd	https://en.wikipedia.org/wiki/Mkd_(software)                  "mkd Wikipedia page"
+perldoc	http://perldoc.perl.org
+pydoc	https://en.wikipedia.org/wiki/Pydoc                              "Wikipedia Pydoc"
+rdoc	https://en.wikipedia.org/wiki/RDoc                        "RubyDoc Wikipedia page"
+yard	https://en.wikipedia.org/wiki/YARD_(software)
+

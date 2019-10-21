@@ -1,0 +1,6 @@
+
+    foreach () { for arg in ${@:2}; do $1 $arg; done; }
+    echo "# foreach dateArg ..."
+    foreach dateArg a e i o u     # a purposely shorter list
+    echo "# fbdy foreach dateArg"
+    fbdy foreach dateArg    

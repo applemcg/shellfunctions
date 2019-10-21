@@ -1,0 +1,39 @@
+
+    today () 
+    { 
+        date +%Y%m%d
+    }
+    dateArg () 
+    { 
+        date "+$1: %$1"
+    }
+    fbdy () 
+    { 
+        declare -f ${*:-fbdy}
+    }
+    foreach () 
+    { 
+        cmd="$1";
+        shift;
+        for arg in "$@";
+        do
+            $cmd "$arg";
+        done
+    }
+    gh () 
+    { 
+        history | grep -i $*
+	}
+	comment ()
+	{
+    	echo $* 1>&2
+	}
+    quietly () 
+    { 
+        "$@" 2> /dev/null
+    }
+    ignore () 
+    { 
+        "$@" > /dev/null
+    }
+

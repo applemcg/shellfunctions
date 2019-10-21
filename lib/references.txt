@@ -1,0 +1,15 @@
+
+ [awk]:        https://en.wikipedia.org/wiki/AWK                       "Awk programming language"
+ [bashhist]:   http://www.catonmat.net/download/bash-history-cheat-sheet.txt        "Cheat sheet" 
+ [comparison]: https://en.wikipedia.org/wiki/Comparison_of_documentation_generators
+ [javadoc]:    http://www.oracle.com/technetwork/java/javase/documentation/index-jsp-135444.html
+                                                                       "Oracle JavaDoc main page"
+
+ [jjhistory]:  https://www.youtube.com/watch?v=MbXofShhMv8         "Joe James on Command History"
+ [martyutube]: https://www.youtube.com/channel/UCL-4038hJH6JTCJKoqunFuQ "Marty's YouTube Channel"
+ [mkd]:        https://en.wikipedia.org/wiki/Mkd_(software)                  "mkd Wikipedia page"
+ [perldoc]:    http://perldoc.perl.org
+ [pydoc]:      https://en.wikipedia.org/wiki/Pydoc                              "Wikipedia Pydoc"
+ [rdoc]:       https://en.wikipedia.org/wiki/RDoc                        "RubyDoc Wikipedia page"
+ [yard]:       https://en.wikipedia.org/wiki/YARD_(software)
+

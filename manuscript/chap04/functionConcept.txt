@@ -1,0 +1,4 @@
+concept 04	 avoid using a local variable in a function
+concept 04	 re-use a command from the command history
+concept 04	 use expanded positional parameter features
+function 04	 foreach - execute function on args ...

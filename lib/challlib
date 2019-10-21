@@ -1,0 +1,68 @@
+ch010src () 
+{ 
+    function hello () 
+    { 
+        echo "Hello, World!"
+    };
+    function today () 
+    { 
+        date +%Y${2}%m${1}%d
+    }
+}
+ch020src () 
+{ 
+    function dateArg () 
+    { 
+        date "+$1: %$1"
+    }
+}
+ch030src () 
+{ 
+    function fbdy () 
+    { 
+        declare -f ${*:-fbdy}
+    }
+}
+ch040src () 
+{ 
+    function foreach () 
+    { 
+        local cmd=$1;
+        shift;
+        for arg in "$@";
+        do
+            $cmd $arg;
+        done
+    }
+}
+ch050src () 
+{ 
+    function gh () 
+    { 
+        history | grep -i "${*:-()}" | awk '$2 !~ /^gh$/'
+    };
+    function comment () 
+    { 
+        echo "$*" 1>&2
+    };
+    function quietly () 
+    { 
+        : ~ cmmd args ...;
+        : returns STATUS, but not STDERR;
+        $@ 2> /dev/null
+    };
+    function ignore () 
+    { 
+        : ~ cmmd args ...;
+        : returns STATUS, but not STDOUT;
+        $@ > /dev/null
+    };
+    function prov () 
+    { 
+        printf "prov_doc()\n{\n : $*\n}\n" "$@"
+    };
+    function book_history () 
+    { 
+        ${*:-echo} hello today dateArg fbdy foreach gh quietly ignore prov book_history
+    }
+}

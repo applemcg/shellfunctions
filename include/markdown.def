@@ -1,0 +1,128 @@
+_divert(-1)
+
+     -------------------------------------- User Macros	--
+
+_define_( BRACED,``&#91;$*&#93;'')
+
+     BRACED 
+
+   hides [ ... ]
+
+_define_( PARENED,``&#40;$*&#41;'')
+
+     PARENED
+
+  hides ( ... )
+
+     CHAPTER
+
+    "mulit word title" FileHandle
+
+_define_( CHAPTER,`_TITLE( $1) 
+_pushdef_(section,_ifelse($3,,$2,$3))
+_pushdef_(end_chapter,src/$2.end)
+_INCLUDE(_end_chapter) _PAD 
+_INCLUDE(inc/$2.toc) _PAD 
+_H2( _section) _PAD
+Here are the _LINK( learning objectives, ./lrn_$2.html) for this chapter. _PAD
+_popdef_(section)
+')
+
+_define_( CODE,`code@$1@')
+
+_define_( ED,`_EM( (ed: $1))')
+_define_( EM,`_$1_')
+_define_(END_CHAPTER,`_INCLUDE(_end_chapter)
+_popdef_(end_chapter)')
+
+_define_( H1,`_tocSection(`#', $1)')
+_define_( H2,`_tocSection(`##', $1)')
+_define_( H3,`_tocSection(`###', $1)')
+_define_( H4,`_tocSection(`####', $1)')
+_define_( H5,`_tocSection(`#####', $1)')
+
+_define_( INCLUDE,`<!-- include $1 -->')
+_define_( INDEX,`_errprint(INDEX _FILE/_currentSection/$*
+)$*')
+
+_define_( LI,`*')
+_define_( LINK,`[$1]($2)')
+
+     PAD 
+
+   forces a paragraph break for Markdown
+
+_define_( PAD,`
+
+')
+_define_( REF_SET,`[$1]: $2 "$3"')
+_define_( REF_GET,`[$1] [$2]')
+
+_traceon(`_REF_SET',`_REF_GET')
+
+_define_( STRONG,`**_INDEX($1)**')
+
+_define_( TEXT,`_whc_include($1)')
+
+     TEXT 
+
+  may be called a smart include
+
+  it uses whc_include to figure out if there is a source file *src OR
+  a text (markdown) file *txt
+
+_define_( TITLE,`_tag(TITLE,$1)')
+
+     UNIX
+
+     come back later and use the one-time-service to handle 
+     the "&reg;"
+
+_define_( UNIX, `Unix&reg;')
+
+    ------------------------------------- Web shortcuts	--
+
+_define_( WIKIPEDIA, `http://en.wikipedia.org/wiki/$1')
+_define_( WWW,       ``http://www.$1'')
+_define_( G_S,       `_WWW( google.com/search?q=$1)')
+
+    ----------------------------------------- Utilities	--
+
+_define_(concat, `$1$2$3$4$5$6$7$8$9')
+
+_define_(exists, `_not(_syscmd([ -f $1 ])_sysval)')
+
+_define_(istrue, `_ifelse($1,0,0,$1,,0,1)')
+
+_define_(not,	 `_eval(1-_istrue($1))', istrue)
+
+_define_(tocSection, `_define_(currentSection,$2)_dnl
+`$1 $2'')
+
+_define_( tag,  `<$1>$2</$1>')
+
+     ----------------------------------- prefer SRC to TXT	--
+
+_define_(pr2s,	 `_ifelse( _exists($1.$2), 1, $2, $3)')
+_define_(sot,	 `$1._pr2s($1,src,txt)')
+
+    --------------------------------- Selective Include	--
+
+_define_(whc_include,	`_concat(_include_, _pr2s($1,src,txt), ($1))')
+
+*  whc_include either invokes
+     * include_src if  FILE.src exists,  OR
+     * include_txt if it does NOT
+
+_define_(include_src,	 `_sinclude( $1.src)')
+_define_(include_txt,	 `_INCLUDE( $1.txt)')
+
+    ------------------------------ Commands, not Macros	--
+
+  awk '$1 ~ /CMD/' markdown.def | sed 's/.*CMD//' | bash
+  CMD grep -E '(^[#\* ]|^$)' markdown.def | uniq  | tee markdown.txt
+
+
+_divert(0)
+
+

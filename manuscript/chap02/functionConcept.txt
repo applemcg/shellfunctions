@@ -1,0 +1,5 @@
+function 02	 dateArg - display arg and date format
+function 02	 date_arg - adorned dateArg
+concept 02	 shell arguments - positional parameters
+concept 02	 for loop 
+concept 02	 bash brace expansion { ... }

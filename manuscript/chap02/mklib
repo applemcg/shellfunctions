@@ -1,0 +1,11 @@
+
+
+   run_this date_arg F
+   run_this dateArg  F
+   cprove date "+a: %a" | fourspaces > dateA.run
+   eprove "for arg in {a..z}; do date_arg \$arg; done" | fourspaces > dateAZ.run
+
+mkht
+
+
+

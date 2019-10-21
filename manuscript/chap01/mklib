@@ -1,0 +1,7 @@
+
+
+extract_new  | onlyChanged functionConcept.txt
+
+foreach run_this today
+
+mkht

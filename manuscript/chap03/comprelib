@@ -1,0 +1,16 @@
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    today () 
+    { 
+        date +%Y%m%d
+    }
+    dateArg () 
+    { 
+        date "+$1: %$1"
+    }
+    date_arg () 
+    { 
+        date "+$1: <%$1>"
+    }

@@ -1,0 +1,11 @@
+concept 07	 collect new commandline functions
+concept 07	 save the functions into a library
+concept 07	 re-use the function library
+concept 07	 record command usage and results
+concept 07	 save a list of functions
+concept 07	 redirecting stderr and stdout
+function 07	 gh -- Grep the History
+function 07	 quietly -- quiet the noise, e.g. stderr
+function 07	 ignore -- the stdout. there are times to ~
+function 07	 prov -- command provenance and results
+function 07	 function_list -- list of functions to this point.

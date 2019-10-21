@@ -1,0 +1,7 @@
+_shdoc
+shdoc
+shd_justcolon
+myname
+report_notfunction
+report_notpipe
+report_usage

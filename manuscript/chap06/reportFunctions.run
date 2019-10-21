@@ -1,0 +1,14 @@
+    function report_notfunction_doc {
+        : returns: TRUE when 1st arg "ISN'T" a function,;
+        : ... FALSE if it IS a function;
+        : date: 2018-02-16;
+    }
+    function report_notpipe_doc {
+        : returns: TRUE when STDIN "ISN'T" a pipe;
+        : ... FALSE if stdin is a pipe;
+        : date: 2018-02-16;
+    }
+    function report_usage_doc {
+        : writes: usage message of report_... caller FAILURE to STDERR;
+        : date: 2018-03-30;
+    }
