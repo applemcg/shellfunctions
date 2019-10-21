@@ -1,3 +1,6 @@
+# dont ignore .gitignore
+
+!.gitignore
 
 # local backup, version directories
 .bak/
@@ -9,4 +12,4 @@ Icon*
 *~
 .*#
 *.err
-.[a-fh-z]*
+.[a-z]*
