@@ -2,10 +2,11 @@
 
 !.gitignore
 
-# local backup, version directories
+# Directories: local backup, version directories
 .bak/
 .ver/
 ar/
+*lib.d/
 
 # stray files
 Icon*

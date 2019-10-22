@@ -28,7 +28,7 @@ funthruch ()
     : date: 2018-06-28;
     : date: 2018-06-29;
     dir=$(basename $PWD);
-    touch functions.txt
+    touch functions.txt;
     for f in ../chap*/functions.txt;
     do
         echo $f;
@@ -141,29 +141,29 @@ smd ()
     app_trace $*;
     mdheader;
     set ${1%.src}.{md,src,tmp,err} csslink.src $*;
-    newest $1 ${2} $(included ${*:2}) || {
-        app_trace include $5 $2 STDERR  $4 TEE $3 ONLYCHANGED $1
+    newest $1 ${2} $(included ${*:2}) || { 
+        app_trace include $5 $2 STDERR $4 TEE $3 ONLYCHANGED $1;
         doit include $5 $2 2> $4 | tee $3 | onlyChanged $1
     };
-    markdown $1 > $2
+    markdown $1 > $2;
     open $2
 }
-mkht ()
-{
-     : convert a {default, the newest} source, SRC
-     set -- $(suf_newest src $1)
-     set $1 ${1%.src}.md ../ch$(chno)_${1%.src}.md
-     app_trace $*
-     backup_lib mklib
-     app_trace  "about to: markdown $1 > $2"          
-     smd $1
-     app_trace newwest $3 $2 OR cat $2 PIPE onlyChanged $3     
-     newest $3 $2 || cat $2 | onlyChanged $3
-     comment what about *.sh *.run $(llib)/references.txt 
+mkht () 
+{ 
+    : convert a {default, the newest} source, SRC;
+    set -- $(suf_newest src $1);
+    set $1 ${1%.src}.md ../ch$(chno)_${1%.src}.md;
+    app_trace $*;
+    backup_lib mklib;
+    app_trace "about to: markdown $1 > $2";
+    smd $1;
+    app_trace newwest $3 $2 OR cat $2 PIPE onlyChanged $3;
+    newest $3 $2 || cat $2 | onlyChanged $3;
+    comment what about *.sh *.run $(llib)/references.txt
 }
 labify () 
-{
-    : todo: insert in the SMD, OMD? functions
+{ 
+    : todo: insert in the SMD, OMD? functions;
     cat ${*:--} | awk '
 
     $1 !~ /^##*$/ { print; next }
@@ -178,58 +178,64 @@ labify ()
                   }
     '
 }
-
-suf_newest () { echo ${2:-$(ls -t *.$1 | sed 1q)}; }
-m4ht ()
-{
-     : convert a {default, the newest} Markdown into HTML copy
-     set -- $(suf_newest src $1)
-     set $1  ../ch$(chno)_${1%.src}.md ${1%.src}.html
-     app_trace $*
-     backup_lib mklib
-     newest $3 $1 *.sh *.run $(include)/local.m4 $(llib)/references.txt && return
-     app_trace  "about to: mm4 $1 | tee $2 | markdown - > $3"
-     mm4 $1 | tee $2 |  markdown - > $3
+suf_newest () 
+{ 
+    echo ${2:-$(ls -t *.$1 | sed 1q)}
 }
-run_function ()
-{
-    app_trace $*
-    . $1; provenance ${*:2}
-}    
-run_cmd  ()
-{
-    : doc: creates a FILE.run from FILE.sh to include in the chapter
-    : args: FILE, commands, are stored in the command file
+m4ht () 
+{ 
+    : convert a {default, the newest} Markdown into HTML copy;
+    set -- $(suf_newest src $1);
+    set $1 ../ch$(chno)_${1%.src}.md ${1%.src}.html;
+    app_trace $*;
+    backup_lib mklib;
+    newest $3 $1 *.sh *.run $(include)/local.m4 $(llib)/references.txt && return;
+    app_trace "about to: mm4 $1 | tee $2 | markdown - > $3";
+    mm4 $1 | tee $2 | markdown - > $3
+}
+run_function () 
+{ 
+    app_trace $*;
+    . $1;
+    provenance ${*:2}
+}
+run_cmd () 
+{ 
+    : doc: creates a FILE.run from FILE.sh to include in the chapter;
+    : args: FILE, commands, are stored in the command file;
     : date: 2019-05-17;
     report_notargcount 1 $# shell functions file && return 1;
-    app_trace
-    cmd=$1.sh; shift
-    [[ -f $cmd ]] || printf "$ $*" > $cmd
-    provenance "$@" | fourspaces     > ${cmd%.sh}.run
+    app_trace;
+    cmd=$1.sh;
+    shift;
+    [[ -f $cmd ]] || printf "$ $*" > $cmd;
+    provenance "$@" | fourspaces > ${cmd%.sh}.run
 }
 run_this () 
-{
-    : doc: creates a FILE.run from FILE.sh to include in the chapter
-    : args: FILE [function in the file, defaulting to FILE] 
+{ 
+    : doc: creates a FILE.run from FILE.sh to include in the chapter;
+    : args: FILE [function in the file, defaulting to FILE];
     : date: 2019-05-17;
     report_notargcount 1 $# shell functions file && return 1;
-    newest $1.run $1.sh || { run_function $1.sh $* | fourspaces > $1.run; }
-    comment $1.run;     
+    newest $1.run $1.sh || { 
+        run_function $1.sh $* | fourspaces > $1.run
+    };
+    comment $1.run
 }
 provenance () 
 { 
     : date: 2017-07-18;
     : date: 2019-05-18;
     app_trace $# "$@";
-    report_notfunction ${1:-/dev/null} && return 1
-    echo '$' "$@";    
+    report_notfunction ${1:-/dev/null} && return 1;
+    echo '$' "$@";
     eval "$@";
     echo '$ ...'
 }
 chrefs () 
-{
-    : doc: HTTP CHapter REFerenceS
-    : todo: protect labels [xyx] with spaces
+{ 
+    : doc: HTTP CHapter REFerenceS;
+    : todo: protect labels [xyx] with spaces;
     grep http ${*:-../chap*/*.md} | sed '
 
         s/^..\///
@@ -244,16 +250,16 @@ functionConcept ()
     set -- $(myname);
     sort ../*/$1.txt | tee $(bitmeld)/lib/$1.txt
 }
-tabch ()
-{
-    : write to example .SH file, typically function source
+tabch () 
+{ 
+    : write to example .SH file, typically function source;
     fourspaces | onlyChanged $*
 }
 levelTwo () 
-{
-    : delivers level two document headers from either manuscript or chapter directories
-    : e.g.  ~ *.md OR   ~ ../chap*/*.md
-    : 
+{ 
+    : delivers level two document headers from either manuscript or chapter directories;
+    : e.g. ~ *.md OR ~ ../chap*/*.md;
+    :;
     grep '^## ' ${*:-*.md} | sed '
 
         # manuscript directory
@@ -272,19 +278,17 @@ llib ()
     for dir in $(bitmeld) $(home) $HOME;
     do
         local d=$dir/lib;
-        [[ -d $d ]] && {
-	    indir $d pwd
+        [[ -d $d ]] && { 
+            indir $d pwd;
             return
         };
     done
 }
-book_init ()
-{
-    backup_lib $(bitmeld)/bin/booklib
-    [[ -f mklib ]] &&  . ./mklib
+book_init () 
+{ 
+    backup_lib $(bitmeld)/bin/booklib;
+    [[ -f mklib ]] && . ./mklib
 }
-book_init 1>&2
-
 md2ht () 
 { 
     set ${1:-$(pick $(ls -t *.md))};
@@ -300,13 +304,19 @@ mm4_test ()
     set ${1:-markua};
     mm4 --define _${1} test.m4 > ${1}_version.run
 }
-mm4 ()
-{
-    : name: Markdown M4
+mm4 () 
+{ 
+    : name: Markdown M4;
     : doc: so long as Markua is handling Leanpubs markdown, which means "no
-    : embedded HTML", and I was already using @include to embed code
-    : sequences, it now seems prudent to combine these in an upwardly
-    : compatible format, capapble of yielding both Gruber Markdown and Markua
-    :
+    : embedded HTML", and I was already using @include to embed code;
+    : sequences, it now seems prudent to combine these in an upwardly;
+    : compatible format, capapble of yielding both Gruber Markdown and Markua;
+    :;
     m4 -I $(include) {hacks,underscore,local}.m4 $*
 }
+book ()
+{
+    app_isa $* || return
+    
+}
+echo book_init 1>&2
