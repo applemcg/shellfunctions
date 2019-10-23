@@ -1,16 +1,21 @@
 # dont ignore .gitignore
 
 !.gitignore
+!style.css
 
 # Directories: local backup, version directories
+
 .bak/
 .ver/
 ar/
 *lib.d/
 
 # stray files
+
 Icon*
 *~
 .*#
 *.err
+*.css
+*.tmp
 .[a-z]*

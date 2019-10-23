@@ -1,4 +1,27 @@
-<link rel="stylesheet" type="text/css" href="./mcgowan.css" />
+body {
+ 	color: black;
+ 	font-family: Arial, Helvetica, sans-serif;
+	max-width: 768px;
+ 	margin: 10px 15px 20px; 
+}
+p, dd, blockquote { 
+ 	text-align: justify;
+}
+a {
+ 	text-decoration: none;
+}
+a:link {
+ 	color: blue
+}
+a:visited {
+ 	color: purple
+}
+a:hover {
+ 	text-decoration: underline; 
+} 
+
+<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
+
 <p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
 
 <p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>

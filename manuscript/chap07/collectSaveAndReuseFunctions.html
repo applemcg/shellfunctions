@@ -1,6 +1,24 @@
-<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
-
-<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
+<p>body {
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 768px;
+    margin: 10px 15px 20px; 
+}
+p, dd, blockquote { 
+    text-align: justify;
+}
+a {
+    text-decoration: none;
+}
+a:link {
+    color: blue
+}
+a:visited {
+    color: purple
+}
+a:hover {
+    text-decoration: underline; 
+} </p>
 
 <h1>Collect, save, and re-use functions</h1>
 
@@ -16,35 +34,17 @@ but think of then as commands, as if they were separate shell scripts.</p>
 <p>In this  exercise, you'll collect,  save, and make the  functions you've
 created in this book available for routine re-use.</p>
 
-<h2>New Concepts</h2>
-
-<ul>
-<li>collect new commandline functions</li>
-<li>save the functions into a library</li>
-<li>re-use the function library</li>
-<li>record command usage and results</li>
-<li>save a list of functions</li>
-<li>redirecting stderr and stdout</li>
-</ul>
-
 <h2>New Functions</h2>
 
-<ul>
-<li>gh -- Grep the History</li>
-<li>quietly -- quiet the noise, e.g. stderr</li>
-<li>ignore -- the stdout. there are times to ~</li>
-<li>prov -- command provenance and results</li>
-<li>function_list -- list of functions to this point.</li>
-</ul>
+<h2>New Concepts</h2>
 
 <h2>History, and Quietly</h2>
 
 <p>First, three simple little function to add peace and quiet to our
-commands.  Two more will follow later in after saving the functions.
-Adding these functions demonstrates how maintain a library of short
-functions withour recourse to a text editor</p>
+commands.</p>
 
-<p>The <strong>history</strong> builtin gets us started.  It's often a command,
+<p>Peace, the ability to recall our actions, and easily find the useful
+bits.  The <strong>history</strong> builtin gets us started.  It's often a command,
 or more likely, part of a command we remember:</p>
 
 <pre><code>$ history
@@ -59,8 +59,10 @@ for the many command options.</p>
 <pre><code>gh () { history | grep -i ${*:-.}; }
 </code></pre>
 
-<p>When developing functions it may be useful to put diagnostics on the
-standard error: <code>stderr</code>.  The first opportunity is what I call the
+<p>And now the quiet.</p>
+
+<p>When developing functions it may be useful to put results on the
+standard error: <em>stderr</em>.  The first opportunity is what I call the
 <em>semantic comment</em>.   The shell offers the sharp sign as a leading
 comment delimiter:</p>
 
@@ -115,50 +117,6 @@ says direct to the <em>stderr</em>, while the simple ">" directs the <em>stdout<
 <pre><code>$ ignore ls  file  # makes no sense, i.e. throws the output
 $ quietly ls file  # suppresses "file not found" message
 </code></pre>
-
-<h2>An Experiment in Comments</h2>
-
-<p>Enter the following function on the command line, first entering the function 
-definition, then executing each command in turn.</p>
-
-<p>First, note since the function definition includes a trailing comment, the
-closing <code>}</code> curly brace must be entered on a separate line.</p>
-
-<p>Then execute the <code>comment_demo</code> function, then execute it as the argument 
-to <code>quietly</code> and then to <code>ignore</code>.   </p>
-
-<pre><code>$ comment_demo () { comment this is a comment;  # this is NOT a comment
-  }
-$ comment_demo
-$ quietly comment_demo
-$ ignore comment_demo
-$ fbdy comment_demo
-</code></pre>
-
-<p>Here are the results of executing those commands</p>
-
-<pre><code>comment_demo
-this is a comment
-
-quietly comment_demo
-
-ignore comment_demo
-this is a comment
-
-fbdy comment_demo
-comment_demo () 
-{ 
-    comment this is a comment
-}
-</code></pre>
-
-<p>The surprise with the last test: <code>fbdy collect_demo</code> is the
-disappearance of the sharp comment.  To demonstrate, edit sharp (<code>#</code>)
-comments into any of your functions.  Then either with <code>fbdy</code> or
-declare -f notice all those nicely placed comments disappear.  This
-then is why the <code>comment</code> function is useful in itself.  Fortunately,
-bash offers yet another means to comment shell functions.  This will 
-be taken up in a later chapter.</p>
 
 <h2>Collecting</h2>
 
@@ -251,13 +209,13 @@ run down the missing.</li>
 function, <strong>prov</strong> standing for the word
 <a href="http://www.merriam-webster.com/dictionary/provenance">provenance</a>,</p>
 
-<p>First, enter the <strong>prov</strong> function, and just for fun, <strong>function_list</strong>: </p>
+<p>First, enter the <strong>prov</strong> function, and just for fun, <strong>book_history</strong>: </p>
 
 <pre><code>prov ()
 { 
       printf "prov_doc ()\n{\n : $*\n}\n"; "$@"
 }
-function_list () 
+book_history () 
 { 
     echo hello today dateArg fbdy foreach gh quietly ignore
 }
@@ -265,17 +223,17 @@ function_list ()
 
 <p>So, now do this to save your work:</p>
 
-<pre><code>$ prov fbdy $(function_list) prov function_list | tee firstlib
-$ chmod +x firstlib 
-$ cat firstlib
+<pre><code>$ prov fbdy $(book_history) prov book_history | tee booklib
+$ chmod +x booklib 
+$ cat booklib
 </code></pre>
 
 <p>Produces this, and by virtue of the <strong>tee</strong> command, you've just
-stored in <strong>firstlib</strong>.</p>
+stored in <strong>booklib</strong>.</p>
 
 <pre><code>prov_doc ()
 {
-    : fbdy hello today dateArg fbdy foreach gh quietly ignore prov function_list
+    : fbdy hello today dateArg fbdy foreach gh quietly ignore prov book_history
 }
 hello () 
 { 
@@ -319,7 +277,7 @@ prov ()
     printf "prov_doc ()\n{\n    : $*\n}\n";
     "$@"
 }
-function_list () 
+book_history () 
 { 
     echo hello today dateArg fbdy foreach gh quietly ignore
 }
@@ -328,14 +286,14 @@ function_list ()
 <h3>Examine your work</h3>
 
 <ul>
-<li>There are three functions in the library, not listed in the <strong>function_list</strong>.
+<li>There are three functions in the library, not listed in the <strong>book_history</strong>.
   How did they get there?</li>
 <li>Particularly, the <strong>prov_doc</strong> function, where did that come from?</li>
-<li>How might you modify the <strong>function_list</strong> to include itself and <strong>prov</strong>?</li>
+<li>How might you modify the <strong>book_history</strong> to include itself and <strong>prov</strong>?</li>
 <li>Do you need to add <strong>prov_doc</strong> to the book history?</li>
 </ul>
 
-<p>Your <strong>firstlib</strong> is ready for re-use.   </p>
+<p>Your <strong>booklib</strong> is ready for re-use.   </p>
 
 <h2>Reuse</h2>
 
@@ -351,8 +309,8 @@ session.</p>
 <li>Open  another and  change directory to  the same location  as your original session.</li>
 <li><p><em>source</em> your new library:</p>
 
-<p>$ source firstlib        # or  ". firstlib"; that's a period
-   $ fbdy $(function_list)  # shows the function bodies</p></li>
+<p>$ source booklib        # or  ". booklib"; that's a period
+   $ fbdy $(book_history)  # shows the function bodies</p></li>
 </ul>
 
 <p>If everything is in order, you're ready for the next step.</p>
@@ -364,12 +322,12 @@ terminal session.  The most straight-forward is to use your
 <strong>.profile</strong>, routinely executed by the <em>login</em> sequence.  Add this
 line to the end of your .profile:</p>
 
-<pre><code>source {/the/directory/for/your/}firstlib
-echo $(function_list) 1&gt;$2
+<pre><code>source {/the/directory/for/your/}booklib
+echo $(book_history) 1&gt;$2
 </code></pre>
 
-<p>You have enabled the functions in the firstlib and then written the
-function names on the <em>stderr</em> as a reminder.  The <strong>function_list</strong>
+<p>You have enabled the functions in the booklib and then written the
+function names on the <em>stderr</em> as a reminder.  The <strong>book_history</strong>
 and <strong>comment</strong> functions supplied the list, and then put them on the
 standard error.</p>
 

@@ -1,131 +1,158 @@
-<link rel="stylesheet" type="text/css" href="./mcgowan.css" />
+body {
+ 	color: black;
+ 	font-family: Arial, Helvetica, sans-serif;
+	max-width: 768px;
+ 	margin: 10px 15px 20px; 
+}
+p, dd, blockquote { 
+ 	text-align: justify;
+}
+a {
+ 	text-decoration: none;
+}
+a:link {
+ 	color: blue
+}
+a:visited {
+ 	color: purple
+}
+a:hover {
+ 	text-decoration: underline; 
+} 
 
-# Write a shell function 
+<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
 
-The simplest shell functions may be written on a single line at the
-command prompt.
+<h1>Write a shell function</h1>
 
-## New Functions
+<p>The simplest shell functions may be written on a single line at the
+command prompt.</p>
 
-In this chapter, you will write and use two simple shell functions:
+<h2>New Functions</h2>
 
-+ hello - programmers birth announcement
-+ today - from the date command.
+<p>In this chapter, you will write and use two simple shell functions:</p>
 
-## New Concepts
+<ul>
+<li>hello - programmers birth announcement</li>
+<li>today - from the date command.</li>
+</ul>
 
-In this chapter you will learn these concepts, how to :
+<h2>New Concepts</h2>
 
-+ write a demonstration function on the command line in different formats,
-+ call the function,
-+ show the function text.
-+ use features of the __date__ command
+<p>In this chapter you will learn these concepts, how to :</p>
 
-## Hello world 
+<ul>
+<li>write a demonstration function on the command line in different formats,</li>
+<li>call the function,</li>
+<li>show the function text.</li>
+<li>use features of the <strong>date</strong> command</li>
+</ul>
 
-In this  book, when you see a dollar sign, that stands in for your
-command prompt.
-    
-    $ ...
+<h2>Hello world</h2>
 
-Here is the Programmers Birth Announcement: **Hello World!**.  Type
-this at your command prompt:
-    
-    $ hello () { echo 'Hello World!'; }
+<p>In this  book, when you see a dollar sign, that stands in for your
+command prompt.</p>
 
-On the above line, following the command prompt, type everything from
-**hello** thru the closing curly brace, followed by a carriage return.
+<pre><code>$ ...
+</code></pre>
 
-You use the  function by typing its name, "hello"  at the command line.
+<p>Here is the Programmers Birth Announcement: <strong>Hello World!</strong>.  Type
+this at your command prompt:</p>
+
+<pre><code>$ hello () { echo 'Hello World!'; }
+</code></pre>
+
+<p>On the above line, following the command prompt, type everything from
+<strong>hello</strong> thru the closing curly brace, followed by a carriage return.</p>
+
+<p>You use the  function by typing its name, "hello"  at the command line.
 Here  is the function  definition (on  line 1),  followed by  using it
 (line 2), and the shell's response (line 3).  The next shell prompt is
-on line 4.
-     
-    $ hello () { echo 'Hello World!' ; }
-    $ hello
-    Hello World!
-    $ 
+on line 4.</p>
 
-You can see the definition of a function with the **declare**
-bash built-in:
-     
-    $ declare -f hello
+<pre><code>$ hello () { echo 'Hello World!' ; }
+$ hello
+Hello World!
+$
+</code></pre>
 
-Type that command. Notice your function has been slightly
-reformatted. [More on that later](#inspectAfunctionBody).
-Here is the results of the command:
+<p>You can see the definition of a function with the <strong>declare</strong>
+bash built-in:</p>
 
-    hello () 
-    { 
-        echo 'Hello World!'
-    }
+<pre><code>$ declare -f hello
+</code></pre>
 
-## Getting it right 
+<p>Type that command. Notice your function has been slightly
+reformatted. <a href="#inspectAfunctionBody">More on that later</a>.
+Here is the results of the command:</p>
 
-The function syntax: 
+<pre><code>hello () 
+{ 
+    echo 'Hello World!'
+}
+</code></pre>
 
-*name () { command ... ; }*
+<h2>Getting it right</h2>
 
-has a **name** of your choosing, and a **command** or
+<p>The function syntax: </p>
+
+<p><em>name () { command ... ; }</em></p>
+
+<p>has a <strong>name</strong> of your choosing, and a <strong>command</strong> or
 semi-colon-separated commands of your choosing.  While there are other
 ways to define a function, I've found the parenthesis-pair simplest to
 identify the name.  A pair of curly braces enclose the commands.  And
 if the trailing curly brace is on the same line as a command, you need
 a semi-colon separator.  You can separate commands on separate lines.
 The only mandatory space in the function definition is the space
-following the first curly brace.
+following the first curly brace.</p>
 
-For completenes, you will see two other formats to define a function.
-In this book, we are using the most concise. The **hello** function could
-have just as well been written as
+<p>For completenes, you will see two other formats to define a function.
+In this book, we are using the most concise. The <strong>hello</strong> function could
+have just as well been written as</p>
 
-    $ function hello () { echo 'Hello World!' ; }
+<pre><code>$ function hello () { echo 'Hello World!' ; }
+</code></pre>
 
-or
+<p>or</p>
 
-    $ function hello { echo 'Hello World!' ; }
+<pre><code>$ function hello { echo 'Hello World!' ; }
+</code></pre>
 
-Experiment with both methods of defining the function and follow by
-using the **declare** example above.
+<p>Experiment with both methods of defining the function and follow by
+using the <strong>declare</strong> example above.</p>
 
+<h2>More interesting</h2>
 
-## More interesting 
-
-Arguments, like file names and options, make functions more useful.
+<p>Arguments, like file names and options, make functions more useful.
 But before looking at how arguments are used, whet your appetite with
-this one, called **today**:
+this one, called <strong>today</strong>:</p>
 
-    $ declare -f today
-    today () 
-    { 
-        date +%Y%m%d
-    }
-    $ today
-    20190517
-    $ ...
+<pre><code>$ declare -f today
+today () 
+{ 
+    date +%Y%m%d
+}
+$ today
+20190517
+$ ...
+</code></pre>
 
-Type the definition and invoke your new function **today**.  Since the
-**date** format specifcation takes almost any upper- or lower-case
+<p>Type the definition and invoke your new function <strong>today</strong>.  Since the
+<strong>date</strong> format specifcation takes almost any upper- or lower-case
 letter, we'll experiment with the all the letter arguments to test
-another function.
+another function.</p>
 
-## Activity
+<h2>Activity</h2>
 
-* *What does the **declare** command tell you about the
-  function syntax?*
+<ul>
+<li><p><em>What does the <strong>declare</strong> command tell you about the
+function syntax?</em></p></li>
+<li><p><em>how might you write a function to capture that idea?</em> a good
+answer requires you know how to use function arguments.  feel free
+to experiment.</p></li>
+<li><p><em>what would you name that function?</em></p></li>
+<li><p>investigate the options to the <strong>date</strong> command: search for
+<em>date manual page</em>.</p></li>
+</ul>
 
-* *how might you write a function to capture that idea?* a good
-  answer requires you know how to use function arguments.  feel free
-  to experiment.
-
-* *what would you name that function?*
-
-* investigate the options to the **date** command: search for
-  *date manual page*.
-
-Mail me if [you have questions](mailto:martymcgowan@alum.mit.edu?subject=writeAshellFunction)
-
-
-
-
-
+<p>Mail me if <a href="mailto:martymcgowan@alum.mit.edu?subject=writeAshellFunction">you have questions</a></p>

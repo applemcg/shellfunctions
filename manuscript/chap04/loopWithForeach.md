@@ -1,15 +1,143 @@
-<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" />
-<link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
-<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" />
-<link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
+body {
+ 	color: black;
+ 	font-family: Arial, Helvetica, sans-serif;
+	max-width: 768px;
+ 	margin: 10px 15px 20px; 
+}
+p, dd, blockquote { 
+ 	text-align: justify;
+}
+a {
+ 	text-decoration: none;
+}
+a:link {
+ 	color: blue
+}
+a:visited {
+ 	color: purple
+}
+a:hover {
+ 	text-decoration: underline; 
+} 
 
-<h1>Loop with foreach</h1>
 
-<p>In the last chapter you used the <em>for ...  do; ... done</em>; syntax to
-iterate over a list.</p>
+# Loop with foreach 
 
-<h2>New Concepts</h2>
+In the last chapter you used the *for ...  do; ... done*; syntax to
+iterate over a list.
 
-<ul>
-<li>avoid using a local variable in a function</li>
-<li>re-use a command from the com
+## New Concepts
+
++ avoid using a local variable in a function
++ re-use a command from the command history
++ use expanded positional parameter features
+
+## New Functions
+
++ foreach - execute function on args ...
+
+## The for syntax
+
+Now you will work with the **for** syntax to produce the **foreach**
+function that handles many loop requirements.
+
+The shell has other useful *looping* constructs, namely the **while**
+loop, which executes while a conditional expression is true.  The
+**for** loop is our focus here.  It executes for each of its arguments.
+
+You  will use the **for** loop to write a function suggested in
+your [exercise with function arguments](#useFunctionArguments):
+
+    $ foreach dateArg {a..z}
+
+Recall the dateArg function:
+
+dateArg ()
+{
+    date "+$1: %$1";
+} 
+
+So, the reason for the **foreach** function should now be clear:
+_execute the first argument, a function or command "for each" of the
+remaining arguments_  The **bash** shell has added the syntactic
+sugar *{a..z}* to produce the lower case letters as separate arguments
+in any command. Long before that feature became available, I used
+functions named *letters, Letters*, and *LETTERS* to produce the
+lower- and upper-case alphabets.
+
+Recall the earlier example with **dateArg**: 
+
+*for var in list... ; do command(s) using $var ... ; done*
+
+specifically:
+    
+    $ for opt in {a..z}; do dateArg $opt; done 
+
+If you don't have your **dateArg** function handy, re-enter it now.
+Then type the above command to execute it.  Notice the generic *opt*
+argument could be any relevant name.  Also, notice the position of the
+dateArg function; it is called once per lower-case letter.
+
+## The foreach function 
+
+Enter this text to create your function, and test it:
+
+
+    foreach () { for arg in ${@:2}; do $1 $arg; done; }
+    echo "# foreach dateArg ..."
+    foreach dateArg a e i o u     # a purposely shorter list
+    echo "# fbdy foreach dateArg"
+    fbdy foreach dateArg    
+
+Here are the _foreach dateArg_ results:
+
+    # foreach dateArg ...
+    a: Sat
+    e: 18
+    i: i
+    o: o
+    u: 6
+    # fbdy foreach dateArg
+    foreach () 
+    { 
+        for arg in ${@:2};
+        do
+            $1 $arg;
+        done
+    }
+    dateArg () 
+    { 
+        date "+$1: %$1"
+    }
+
+The first **foreach** definition treats the first argument as the
+command and the second and subsequent arguments to that command, which
+may be a function.
+
+Foreach may handle an indefinite number of arguments, the first is
+always executed "for each" following argument. It uses the highlighted
+parameter expansion syntax, in this case *${@:2}* which selects from
+the second argument through the remainder.  This allows the use of
+*$1* in it's position, saving the use of a local variable name.
+Another reason for concise functions: you are not juggling too many
+names or concepts to require local variable names.  Find your own
+comfort level with local variables.  And always use the _local_
+keyword.  Shell variables are **global** unless declared to be local.
+
+Notice the use of **fbdy** it encourages writing concise functions.
+
+The inspiration to write the **foreach** function came from teaching a
+course in [Tcl][tcl], which has a similar function.  It seems useful
+to have available in the shell.
+
+[tcl]:  https://en.wikipedia.org/wiki/Tcl  "Tcl in Wikipedia"
+
+## Questions
+
+* *did you compare the foreach function to the for command?*
+* *did you notice the additional syntax in the function?*
+* *did you notice how the function body was displayed?*
+* _what does ${@:2} mean?_
+* _is it possible to nest calls to foreach_
+
+

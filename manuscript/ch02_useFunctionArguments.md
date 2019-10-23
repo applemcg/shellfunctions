@@ -1,159 +1,193 @@
-<link rel="stylesheet" type="text/css" href="./mcgowan.css" />
+body {
+ 	color: black;
+ 	font-family: Arial, Helvetica, sans-serif;
+	max-width: 768px;
+ 	margin: 10px 15px 20px; 
+}
+p, dd, blockquote { 
+ 	text-align: justify;
+}
+a {
+ 	text-decoration: none;
+}
+a:link {
+ 	color: blue
+}
+a:visited {
+ 	color: purple
+}
+a:hover {
+ 	text-decoration: underline; 
+} 
 
-# Use Function Arguments
+<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
 
-In this chapter we add arguments when calling a function.  When
+<h1>Use Function Arguments</h1>
+
+<p>In this chapter we add arguments when calling a function.  When
 calling, the tokens after the function name are called the
-_arguments_.  In the body of the function, the _positional parameters_
-( $1, $2, ... ) are assigned the respective argument values.
+<em>arguments</em>.  In the body of the function, the <em>positional parameters</em>
+( $1, $2, ... ) are assigned the respective argument values.</p>
 
-## New Functions
+<h2>New Functions</h2>
 
-+ dateArg - display arg and date format
-+ date_arg - adorned dateArg
+<ul>
+<li>dateArg - display arg and date format</li>
+<li>date_arg - adorned dateArg</li>
+</ul>
 
-## New Concepts
+<h2>New Concepts</h2>
 
-These are the new concepts:
+<p>These are the new concepts:</p>
 
-+ shell arguments - positional parameters
-+ for loop 
-+ bash brace expansion { ... }
+<ul>
+<li>shell arguments - positional parameters</li>
+<li>for loop </li>
+<li>bash brace expansion { ... }</li>
+</ul>
 
-The **for** loop iterates over a range of aguments. In the exercise,
-we'll also demonstrate a bash shorthand for argument expansion.
+<p>The <strong>for</strong> loop iterates over a range of aguments. In the exercise,
+we'll also demonstrate a bash shorthand for argument expansion.</p>
 
-## the date command
+<h2>the date command</h2>
 
-In the [last exercise](#writeAshellFunction) you used the **date**
+<p>In the <a href="#writeAshellFunction">last exercise</a> you used the <strong>date</strong>
 command in a very limited way.  You are probably aware the date
 command has a number of upper- and lower-case options.  Without going
-into great detail, an option to the **date** command is a plus sign
-(**+**) followed by any number of percent sign - single letter pairs.
+into great detail, an option to the <strong>date</strong> command is a plus sign
+(<strong>+</strong>) followed by any number of percent sign - single letter pairs.
 The format may contain any text; be sure to quote an argument which
-has embedded spaces. e.g.:
-    
-    $ date "+%a%b... and some message"
+has embedded spaces. e.g.:</p>
 
-Which in this case, produced
+<pre><code>$ date "+%a%b... and some message"
+</code></pre>
 
-    $ date "+%a%b... and some message"
-    FriJun... and some message
-    $
-    
-Since the command was run on a Friday in June.  Most letters have some
-useful effect.	
-	
-## The first argument 
+<p>Which in this case, produced</p>
 
-In this exercise, you will write a helper function to remind you what
-each of the many options return. e.g. *what does "date +%a" return*,
+<pre><code>$ date "+%a%b... and some message"
+FriJun... and some message
+$
+</code></pre>
+
+<p>Since the command was run on a Friday in June.  Most letters have some
+useful effect.  </p>
+
+<h2>The first argument</h2>
+
+<p>In this exercise, you will write a helper function to remind you what
+each of the many options return. e.g. <em>what does "date +%a" return</em>,
 and so forth.  Your function will display the letter argument, and the
-"date" result of using it.
+"date" result of using it.</p>
 
-Since  the **date**  command permits  a formatting  option, you
-might have done  this: 
+<p>Since  the <strong>date</strong>  command permits  a formatting  option, you
+might have done  this: </p>
 
-    $ date +a: %a
-    a: Sat
-    $ ...
+<pre><code>$ date +a: %a
+a: Sat
+$ ...
+</code></pre>
 
-Type that command.  What's the purpose?  You will see the value of a
+<p>Type that command.  What's the purpose?  You will see the value of a
 function argument, you can supply any letter to see its effect.
-Enter and use this function, by typing at your terminal:
+Enter and use this function, by typing at your terminal:</p>
 
-    $ dateArg () { date "+$s: %$1"; }
-    $ dateArg F
+<pre><code>$ dateArg () { date "+$s: %$1"; }
+$ dateArg F
+</code></pre>
 
-which results in:
-    
-    $ dateArg F
-    F: 2019-05-19
-    $ ...
+<p>which results in:</p>
 
-In the **dateArg** function, the *$1* takes on the value of the first
-**positional parameter** passed to the function.  e.g.  in the next
-line, the first positional parameter is the letter **F**.  The
+<pre><code>$ dateArg F
+F: 2019-05-19
+$ ...
+</code></pre>
+
+<p>In the <strong>dateArg</strong> function, the <em>$1</em> takes on the value of the first
+<strong>positional parameter</strong> passed to the function.  e.g.  in the next
+line, the first positional parameter is the letter <strong>F</strong>.  The
 formatted date option displays the argument, and with careful reading
 of the
-[date manual command](http://www.bing.com/search?q=unix+date+manual+command)
-[for example](http://unixhelp.ed.ac.uk/CGI/man-cgi?date), you see all
-the options displayed.
+<a href="http://www.bing.com/search?q=unix+date+manual+command">date manual command</a>
+<a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?date">for example</a>, you see all
+the options displayed.</p>
 
-The **dateArg** function first displays the option letter and then the
+<p>The <strong>dateArg</strong> function first displays the option letter and then the
 date format associated with that letter.  Now type some arbitrary
-options, where some are likely to fail:
-    
-    $ dateArg xxx
-    $ dateArg one
-    $ dateArg foo
-    $ dateArg f
-    $ dateArg n
-    $ dateArg x
-    $ dateArg X	
+options, where some are likely to fail:</p>
 
-*What do you see?   Can you explain each one?*
+<pre><code>$ dateArg xxx
+$ dateArg one
+$ dateArg foo
+$ dateArg f
+$ dateArg n
+$ dateArg x
+$ dateArg X
+</code></pre>
 
-## Test them all 
+<p><em>What do you see?   Can you explain each one?</em></p>
 
-Now for the point of the exercise: testing every conceivable valid
-**date** option.  To do that, you  will need a new piece of shell
-syntax, the **for** loop, which looks like this:
-    
-  for *var* in *list* ; do *command(s) using var ...* ; done
+<h2>Test them all</h2>
 
-This will work: 
-     
-    $ for opt in {a..z}; do dateArg $opt; done 
+<p>Now for the point of the exercise: testing every conceivable valid
+<strong>date</strong> option.  To do that, you  will need a new piece of shell
+syntax, the <strong>for</strong> loop, which looks like this:</p>
 
-Type that command now.
+<p>for <em>var</em> in <em>list</em> ; do <em>command(s) using var ...</em> ; done</p>
 
-*What do you see?* 
+<p>This will work: </p>
 
-Now, some of your explanations come easier.  Since the day, the hour
+<pre><code>$ for opt in {a..z}; do dateArg $opt; done
+</code></pre>
+
+<p>Type that command now.</p>
+
+<p><em>What do you see?</em> </p>
+
+<p>Now, some of your explanations come easier.  Since the day, the hour
 or the minutes many be the same number, some letter options may give
-the same result, and therefore, still be ambiguous.
+the same result, and therefore, still be ambiguous.</p>
 
-You've assigned the first positional parameter, and you can likely
+<p>You've assigned the first positional parameter, and you can likely
 figure out how to deal with the second, third, ... etc.  Also, notice,
 if you haven't done this before, you've just assigned and used a
-**shell variable**, in this case the variable *opt*.  You assign it
-just by the name, and (in the **for** loop) substitute the value with
-a leading dollar sign: **$opt**.  In this case, **dateArg** is
+<strong>shell variable</strong>, in this case the variable <em>opt</em>.  You assign it
+just by the name, and (in the <strong>for</strong> loop) substitute the value with
+a leading dollar sign: <strong>$opt</strong>.  In this case, <strong>dateArg</strong> is
 invoked with each of the lower case letters.  The function is dressed
 up a bit to show off the formatting for newlines, tabs, and note that
-some of the arguments return themselvs.
+some of the arguments return themselvs.</p>
 
-Here is an example.  The command, and it's result:
+<p>Here is an example.  The command, and it's result:</p>
 
-    $ for arg in {a..z}; do date_arg $arg; done
-    $ ...
+<pre><code>$ for arg in {a..z}; do date_arg $arg; done
+$ ...
+</code></pre>
 
-For extra credit: *How do you think you can test
-the upper-case letters as options?*
+<p>For extra credit: <em>How do you think you can test
+the upper-case letters as options?</em></p>
 
-## Questions
+<h2>Questions</h2>
 
-1. the **date_arg** function demonstrates a useful step in unit
-   testing. How (and where) do you think it should be retained?
+<ol>
+<li>the <strong>date_arg</strong> function demonstrates a useful step in unit
+testing. How (and where) do you think it should be retained?</li>
+</ol>
 
-## Next Steps 
+<h2>Next Steps</h2>
 
-Think about this using the latest example.  How would you write a
-**foreach** function to simplify the whole command to this:
-     
-    $ foreach dateArg {a..z}
-	
-This last bit of syntax introduces bash
-[Brace Expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Expansions.html#Shell-Expansions)
+<p>Think about this using the latest example.  How would you write a
+<strong>foreach</strong> function to simplify the whole command to this:</p>
 
-In the example, it expands to the lower case alphabet.  Another examples are quite common.
+<pre><code>$ foreach dateArg {a..z}
+</code></pre>
 
-    $ set {a,e,i,o,u}; echo $# $*
-	$ set -- file.{c,o); echo $# $*
-	
-Mail me if [you have questions](mailto:martymcgowan@alum.mit.edu?subject=useFunctionArguments)
+<p>This last bit of syntax introduces bash
+<a href="https://www.gnu.org/software/bash/manual/html_node/Shell-Expansions.html#Shell-Expansions">Brace Expansion</a></p>
 
+<p>In the example, it expands to the lower case alphabet.  Another examples are quite common.</p>
 
+<pre><code>$ set {a,e,i,o,u}; echo $# $*
+$ set -- file.{c,o); echo $# $*
+</code></pre>
 
-
+<p>Mail me if <a href="mailto:martymcgowan@alum.mit.edu?subject=useFunctionArguments">you have questions</a></p>
