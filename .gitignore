@@ -15,7 +15,8 @@ ar/
 Icon*
 *~
 .*#
-*.err
 *.css
+*.err
+*.html
 *.tmp
 .[a-z]*
