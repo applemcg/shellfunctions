@@ -8,6 +8,8 @@
 .bak/
 .ver/
 ar/
+manuscript/example/
+preview/
 *lib.d/
 
 # stray files
