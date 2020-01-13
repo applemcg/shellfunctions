@@ -4,7 +4,7 @@
  [lastfuncts]: http://shellfunctions.tiddlyspace.com/#FactorAshellScript
                "Resulting Functions on ITtoolbox"
 
- [readme]: http://mcgowans.org/pubs/shellfuncitons/README.md
+ [readme]: http://mcgowans.org/pubs/shellfunctions/README.md
 
 # Factor a shell script
 
@@ -34,28 +34,7 @@ monolithic script.
 Here is  the script a user  posted on *ITtoolbox*, a  Unix, linux, and
 shell scripting forum:
 
-
-    HSTNM=$(hostname)-ebs505 
-    MAILLST="thom email@removed email@removed" #<<< Use login names seperated by spaces 
-    OSLVL=$(oslevel -r) 
-    x=`df -kt |grep 9[4-9]%` 
-    if [[ -n ${x} ]] 
-    then 
-    echo "\n$(date) hostname=$HSTNM,$OSLVL NEEDS ATTENTION:" > /ebs/misc/tmp/ebsdfwarn.out 
-    echo "\n\r\rWARNING these file systems are approaching being full on hostname=$HSTNM,$OSLVL:\r" >> /ebs/misc/tmp/ebsdfwarn.out 
-    echo "\r" >> /ebs/misc/tmp/ebsdfwarn.out 
-    echo "Filesystem 1024-blocks Used Free %Used Mounted on\r" >> /ebs/misc/tmp/ebsdfwarn.out 
-    echo "${x}\r" >> /ebs/misc/tmp/ebsdfwarn.out 
-    echo "\r" >> /ebs/misc/tmp/ebsdfwarn.out 
-    echo ">>>>>>>>>> THIS CAN POTENTIALLY CAUSE LOSS OF DATA <<<<<<<<<\r\r" >> /ebs/misc/tmp/ebsdfwarn.out 
-    find /tmp -xdev -size +2048 -ls |sort -r +6 >> /ebs/misc/tmp/ebsdfwarn.out 
-    mail -s "!!!!! CHECK %USED FOR FILE SYSTEMS ON hostname = $HSTNM,$OSLVL !!!!!" ${MAILLST} < /ebs/misc/tmp/ebsdfwarn.out 
-    echo "END WITH email $(date) on hostname=$HSTNM,$OSLVL" 
-    exit 1 
-    fi 
-    date 
-    find /tmp -xdev -size +2048 -ls |sort -r +6 
-    echo "END WITHOUT email $(date) on hostname=$HSTNM,$OSLVL" 
+@include ./version_001.tab
 
 In this exercise I've made successive small changes, which we'll step
 through, one at a time, changing a few lines at a time. 
@@ -100,7 +79,7 @@ of the environment which should lead to a fair degree of re-use.
 When it's time to name a function, think of action verbs which
 describe _what_ is happening rather than _how_. Occasionally use
 verb-noun pairs.  I'll offer no suggestions on name conventions, other
-than notice I use both underscore (\_) and _camelCase_ notations
+than notice I use both underscore (\_) and _camel-Case_ notations
 for multi-word function names.
 
 ### Syntactic noise
@@ -149,7 +128,13 @@ focus  of  a  wider  generalization   where  system  names,  log  file
 conventions, and  in this case  email-recipients are decided,  and not
 written into operational code.
 
-Concise functions needn't re-name positional parameters. 
+Concise functions needn't re-name positional parameters.  When it
+appears, the function `warn_status` demonstrates a useful exception to
+the rule:
+
+- peel off re-used first arguments when the remainder is a variable list
+- when a default list of arguments is useful for testing
+- when literal text would otherwise make the code less readable
 
 ### A top function
 
@@ -167,13 +152,19 @@ conclusion.
 ## The example
 
 Let's take a look,  first at the script as presented,  and at the risk
-of  appearing daunting,  the  final  script here,  it  ready for  real
+of  appearing daunting,  the  final  script here.  It's  ready for  real
 maintenance.
 
 ### The first and last scripts
 
-Here is the [working script][origscript], and here is the resulting
-script in [fully factored functions][lastfuncts]. 
+Here is the [working script](./version_001.txt) and the resulting
+script in script in [fully factored functions](./version_015.txt).
+
+Until the authoring tools simplify putting *targets* in the file links,
+use your browser's menu options to open a link in a **new window**. 
+With that in mind, as you proceed through
+the examples, for ease of comparison, keep the prior and updated versions of the script in 
+separate windows.
 
 Again, don't be daunted.  In fourteen revisions, each with a specific
 goal in mind is presented with three pieces:
@@ -186,188 +177,170 @@ Each step is accompanied by an explanation, some direction to point
 out how you may inspect your work to take advantage of the
 modification, and a few shell tricks on how to bury the syntactic
 sugar.  In this printed form, the _resulting script_ is the same as
-the next step's _current script_.  An online training version of these
-operations may display separate screens for each of the three pieces.
+the next step's _current script_.  A future edition 
+could display separate screens for each of the three pieces.
 
-If you know how to open  these following pages in separate windows, do
-so.   If  not,  there  is  an  instruction  below,  before  proceeding
-step-by-step through the changes.
-
+The **changes** to following code samples are the result of an `sdiff`
+command comparing the two versions, before, the **current script** and
+after, the **next version**.  This latter is identical to the _current
+script_ in the following paragraph.  The redundancy makes each change
+a self-contained exercise.
 
 ### 1. Put the shortest condition first
 
-I'm a big fan of the  shell operators, **||** and **&&**, standing for
-the __OR__ and __AND__ as results of the _test_ operator.  The program
-author is  already using the __[[  ... ]]__ syntax for  test, so let's
-go.
+Learn to use these shell operators, `||` and  `&&`, standing for
+the logical **OR** and **AND**  as results of the _test_ operator.
 
-#### The changes
+Here note the logic change, which puts the shorter block first.
 
-Use  ' ||  { ...  } ',  collecting a  code block  which will  become a
-function.  note  logic change,  putting shorter block  first.  Replace
-the highlighted test, inverting the logic, collecting the hightlighted
-last lines, and noting the alternate code block has an `exit 1`
+ [ [current script](./version_001.txt)
+][ [changes](./version_001.dif)
+][ [next version](./version_002.txt) ]
 
-![collect shorter code block](images/factor-001.jpeg)
+To change the order of the `if` and `else`, invert the logic.  Note
+the normal (non error) exit moves into the code block within the OR
+idiom: `|| { ...  }`.  This is a step to identifying a function.  Also
+note the final exit is the error condition, hence the `exit 1`
 
-Here is that revision:
+### 2. Eliminate unneeded variables
 
-    [[ -n ${x} ]]  || {
-        date 
-        find /tmp -xdev -size +2048 -ls |sort -r +6 
-        echo "END WITHOUT email $(date) on hostname=$HSTNM,$OSLVL" 
-        exit
-    }
+Now updated with the previous changes, 
 
-### 2. eliminate unneeded variables
+ [ [current script](./version_002.txt)
+][ [changes](./version_002.dif)
+][ [next version](./version_003.txt) ]
 
-Here is the 
-[first modifications](https://dl.dropboxusercontent.com/u/66403621/shellfunctions/factor/txt/ebsdfwarn_002.txt)
-     
-Now introduce SYSID as concatenation of two variables which will later be eliminated.
-#### The changes
+Here is the next modification to introduces SYSID replacing two
+variable names.  This change anticipates a later revision to
+completely remove the variable. A change of this sort needn't be
+anticipated before-hand.  It's the sort of change you may notice later
+in the factoring exercise.
 
-introduce SYSID to replace two variable names
+### 3. Eliminate a variable 
 
-<<(chg/ebsdfwarn_002.txt)
+Here we introduce the bash _dollar paren_ idiom to capture the
+value of an expression as a command argument.
 
-### 3. eliminate a variable 
-after consolidating 
-[two variables into
-one,](https://dl.dropboxusercontent.com/u/66403621/shellfunctions/factor/txt/ebsdfwarn_003.txt)
+    $ command ...   $( sub-command ... ) 
+      
+where the result of the enclosed sub-command is returned as an
+argument or arguments to the calling command.
 
-the next change uses dollar paren ... paren "$( ... )" logic, to
-isolate what had been a variable, into an expression:
+ [ [current script](./version_003.txt)
+][ [changes](./version_003.dif)
+][ [next version](./version_004.txt) ]
+
+Look for this expression,
 
       [[ -n $(df -kt |grep 9[4-9]%) ]]  || {
 
 
-This replaces the 'x' variable with internal evaluation.  (a too-busy evaluation
-is an excellent place for a function)
+which replaces the 'x' variable with internal evaluation.  (a too-busy
+evaluation is an excellent place for a function)
 
-### 4. add warning-file variable
 
-this is a set-up prior to eliminating it
-      
-#### The current script
-}<<(txt/ebsdfwarn_004.txt)
-      
-#### The changes
+### 4. Add warning-file variable
 
-save the warning file name as a variable to be eliminated later.
+this is a set-up prior to eliminating it.
+save the warning file name as a variable to be eliminated later.      
 
-<<(dif/ebsdfwarn_004.txt)
+ [ [current script](./version_004.txt)
+][ [changes](./version_004.dif)
+][ [next version](./version_005.txt) ]
 
-### 5. add a function 
+
+### 5. Add a function 
 
 the **syswarn** function delivers on a promise
-      
-#### The current script
-<<(txt/ebsdfwarn_005.txt)
-      
-#### The changes
+here, adding the functions eliminates repeatedly appending to a file.      
 
-here, adding the functions eliminates repeatedly appending to a file.
+ [ [current script](./version_005.txt)
+][ [changes](./version_005.dif)
+][ [next version](./version_006.txt) ]
 
-<<(dif/ebsdfwarn_005.txt)
-
-### 6. remove a variable 
+### 6. Remove a variable 
 
 begin removing SYSID variable by using it as a function argument
-      
-#### The current script
-<<(txt/ebsdfwarn_006.txt)
-
-#### The changes
-
 the SYSID variable is now the argument to the function.
 
-<<(dif/ebsdfwarn_006.txt)
+ [ [current script](./version_006.txt)
+][ [changes](./version_006.dif)
+][ [next version](./version_007.txt) ]
 
-### 7. eliminate a variable, anticipate passing as arguments
+
+### 7. Eliminate a variable, anticipate passing as arguments
       
 eliminating MAILLIST, and replacing with literal arguments for a
 moment shows where the ultimate high-level command arguments, i.e.
 the destination email addresses will be supplied.
 
-#### The current script
-<<(txt/ebsdfwarn_007.txt)
-      
-#### The changes
-<<(dif/ebsdfwarn_007.txt)
+ [ [current script](./version_007.txt)
+][ [changes](./version_007.dif)
+][ [next version](./version_008.txt) ]
 
-### 8. add functions using an argument
+
+
+### 8. Add functions using an argument
 
 Add **ok\_status** and  **warn\_status** functions taking same SYSID as argument.
 
 And eliminate HSTNM, OSLVL variables which collapse into SYSID.
-      
-#### The current script
-<<(txt/ebsdfwarn_008.txt)
-      
-#### The changes
+
 
 SYSID variable now uses functions returning appropriate values, and the 
 warning message is now within it's own function.
 
-<<(dif/ebsdfwarn_008.txt)
 
-### 9. eliminate warning warning variable
+ [ [current script](./version_008.txt)
+][ [changes](./version_008.dif)
+][ [next version](./version_009.txt) ]
+
+### 9. Eliminate warning warning variable
 
 Use warning file explicitly in the one place it is required,
 anticipating ENVIRONMENT variable at end.
-      
-#### The current script
-<<(txt/ebsdfwarn_009.txt)
-      
-#### The changes
-<<(dif/ebsdfwarn_009.txt)
 
-### 10. move warn_status function to the top of the list. no coding changes
-      
-#### The current script
-<<(txt/ebsdfwarn_010.txt)
+ [ [current script](./version_009.txt)
+][ [changes](./version_009.dif)
+][ [next version](./version_010.txt) ]
 
-#### The changes
-<<(dif/ebsdfwarn_010.txt)
+### 10. Move warn_status function to the top of the list. no coding changes
 
-### 11. re-invert the logic of the test, moving OK status to the end.
-      
-#### The current script
-<<(txt/ebsdfwarn_011.txt)
-      
-#### The changes
-<<(dif/ebsdfwarn_011.txt)
+ [ [current script](./version_010.txt)
+][ [changes](./version_010.dif)
+][ [next version](./version_011.txt) ]
 
-### 12. eliminate SYSID as variable
+### 11. Re-invert the logic of the test, moving OK status to the end.
+
+ [ [current script](./version_011.txt)
+][ [changes](./version_011.dif)
+][ [next version](./version_012.txt) ]
+
+### 12. Eliminate SYSID as variable
 
 by passing the argument to the new function chk_status, issues either
 warning or OK.
-      
-#### The current script
-<<(txt/ebsdfwarn_012.txt)
-      
-#### The changes
-<<(dif/ebsdfwarn_012.txt)
 
-### 13. add shifted function
+ [ [current script](./version_012.txt)
+][ [changes](./version_012.dif)
+][ [next version](./version_013.txt) ]
+
+### 13. Add shifted function
 
 This allows chk_status to pass SYSID ema1 ema2 ... emaN arguments
-      
-#### The current script
-<<(txt/ebsdfwarn_013.txt)
-      
-#### The changes
-<<(dif/ebsdfwarn_013.txt)
 
-### 14. move hard-coded warning file to ENVIRONMENT variable.
+ [ [current script](./version_013.txt)
+][ [changes](./version_013.dif)
+][ [next version](./version_014.txt) ]
+      
+
+### 14. Move hard-coded warning file to ENVIRONMENT variable.
 
 Then, maybe the ... tee file ... may be altogether eliminated.
-      
-#### The current script
-<<(txt/ebsdfwarn_014.txt)
-      
-#### The changes
-<<(dif/ebsdfwarn_014.txt)
 
-###  and in conclusion
+ [ [current script](./version_014.txt)
+][ [changes](./version_014.dif)
+][ [next version](./version_015.txt) ]
+
+## Conclusions
+

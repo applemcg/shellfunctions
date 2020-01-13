@@ -1,0 +1,9 @@
+@include syswarn.fun
+@include warn_status_3.fun
+@include ok_status.fun
+@include chk_status_2.fun
+@include setenv.fun
+
+setenv WARNING_MSG ${WARNING_MSG:-"/ebs/misc/tmp/ebsdfwarn.out"}   
+chk_status "$(hostname)-ebs505,$(oslevel -r)" $*  # the email addresses...
+

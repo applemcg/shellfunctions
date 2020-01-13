@@ -1,0 +1,18 @@
+@include syswarn.fun
+
+SYSID=”$(hostname)-ebs505,$(oslevel -r)”
+
+[[ -n $(df -kt |grep 9[4-9]%) ]]  || {
+    ok_status () {
+        date 
+        find /tmp -xdev -size +2048 -ls |sort -r +6 
+        echo “END WITHOUT email $(date) on hostname=$1” 
+    }
+    ok_status “$SYSID”
+    exit
+}
+warning=”/ebs/misc/tmp/ebsdfwarn.out”
+@include warn_status.fun
+warn_status “$SYSID”
+exit 1
+

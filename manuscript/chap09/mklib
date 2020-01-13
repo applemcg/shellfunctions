@@ -1,0 +1,39 @@
+localmk () 
+{ 
+    : prepare the source examples;
+    foreach lincl version_*.src;
+    eight_sp version_001.txt;
+    dosdiff version_*.txt > scriptChanges.txt
+    backup mklib *.fun *.src *.txt;
+    mkht factorAScript.src
+}
+dosdiff ()
+{
+    : Width: ... -w 116
+    : column: .. -s suppress common lines
+    : tabs: .... -t to spaces
+    : minimal: . -d
+    while [ $# -gt 1 ]
+    do
+	sdiff -w 116 -s -t -d $1 $2 > ${1%.*}.dif
+	script_chgNext ${1%.txt} ${2%.txt}
+	shift
+    done	
+}
+lincl ()
+{
+    include $1 > ${1%.src}.txt;
+}	
+script_chgNext ()
+{
+  printf " [ [current script](./%s.txt)\n"  $1
+  printf "][ [changes](./%s.dif)\n"         $1
+  printf "][ [next version](./%s.txt) ]\n"  $2
+  echo 
+}
+eight_sp ()
+{
+    fourspaces < $1 | fourspaces > ${1%.txt}.tab;
+
+}
+echo localmk 

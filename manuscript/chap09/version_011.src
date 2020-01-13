@@ -1,0 +1,13 @@
+@include syswarn.fun
+@include warn_status.fun
+@include ok_status.fun 
+
+SYSID="$(hostname)-ebs505,$(oslevel -r)"
+
+[[ -n $(df -kt |grep 9[4-9]%) ]]  || {
+    ok_status "$SYSID"
+    exit
+}
+warn_status "$SYSID"
+exit 1
+

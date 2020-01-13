@@ -1,0 +1,7 @@
+@include syswarn.fun
+@include warn_status_2.fun
+@include ok_status.fun 
+@include chk_status_2.fun
+
+chk_status "$(hostname)-ebs505,$(oslevel -r)" $*  # the email addresses...
+

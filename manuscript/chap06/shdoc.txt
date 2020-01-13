@@ -1,4 +1,0 @@
-shdoc
-shd_each
-shd_recover
-myname

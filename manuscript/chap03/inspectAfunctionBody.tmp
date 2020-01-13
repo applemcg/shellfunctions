@@ -1,249 +1,207 @@
-body {
- 	color: black;
- 	font-family: Arial, Helvetica, sans-serif;
-	max-width: 768px;
- 	margin: 10px 15px 20px; 
-}
-p, dd, blockquote { 
- 	text-align: justify;
-}
-a {
- 	text-decoration: none;
-}
-a:link {
- 	color: blue
-}
-a:visited {
- 	color: purple
-}
-a:hover {
- 	text-decoration: underline; 
-} 
 
-<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
+# Inspect a function body 
 
-<p><link rel="stylesheet" type="text/css" href="./mcgowan.css" /></p>
+In this chapter, we'll look at specific details of functions, particularly
+dealing with arguments, and write a function to display functions.
 
-<h1>Inspect a function body</h1>
+## New Concepts
 
-<p>In this chapter, we'll look at specific details of functions, particularly
-dealing with arguments, and write a function to display functions.</p>
+In this exercise, you will use these concepts:
 
-<h2>New Concepts</h2>
++ set positional parameters
++ use default parameters
++ use *eval* to evaluate deferred expression
++ use wild-card parameters
++ use a numeric parameter
++ set and use an alias
 
-<p>In this exercise, you will use these concepts:</p>
+For the time being, think of an `alias` as a short-hand for a function.
 
-<ul>
-<li>set positional parameters</li>
-<li>use default parameters</li>
-<li>use <em>eval</em> to evaluate deferred expression</li>
-<li>use wild-card parameters</li>
-<li>use a numeric parameter</li>
-<li>set and use an alias</li>
-</ul>
+## New Functions
 
-<p>For the time being, think of an <code>alias</code> as a short-hand for a function.</p>
+Recall, in a [previous exercise](#writeAshellFunction) you
+learned how to inspect a function body.  And you were asked, *what
+would you name a function to display a **F**unction **B**o**DY**.*
 
-<h2>New Functions</h2>
+Did I give it away.  That's what I called it:  **fbdy**.
 
-<p>Recall, in a <a href="#writeAshellFunction">previous exercise</a> you
-learned how to inspect a function body.  And you were asked, <em>what
-would you name a function to display a <strong>F</strong>unction <strong>B</strong>o<strong>DY</strong>.</em></p>
+To review:
 
-<p>Did I give it away.  That's what I called it:  <strong>fbdy</strong>.</p>
+    $ declare -f hello    # shows the hello function
 
-<p>To review:</p>
-
-<pre><code>$ declare -f hello    # shows the hello function
-</code></pre>
-
-<p>If you've logged off and logged back in since the previous exercise,
+If you've logged off and logged back in since the previous exercise,
 you've lost the function definition and will have to re-enter it.  In
-a <a href="#collectSaveandReuseFunctions">future exercise</a>, you will learn a
+a [future exercise](#collectSaveandReuseFunctions), you will learn a
 simple means to recover your work from day-to-day, from one command
-session to the next.</p>
+session to the next.
 
-<ul>
-<li>fbdy - display a function</li>
-</ul>
++ fbdy - display a function
 
-<h2>More about arguments</h2>
+## More about arguments 
 
-<p>In addition to the numbered <strong>positional parameters</strong>: 1, 2, 3, ...
-you will learn of other parameter features: </p>
+In addition to the numbered **positional parameters**: 1, 2, 3, ...
+you will learn of other parameter features: 
 
-<ul>
-<li>how to express positional parameters</li>
-<li>report the number of positional parameters, and </li>
-<li>assign a <strong>default value</strong> to a positional parameter.  </li>
-</ul>
++ how to express positional parameters
++ report the number of positional parameters, and 
++ assign a **default value** to a positional parameter.  
 
-<p>Here's how to <strong>set</strong> positional parameters.</p>
+Here's how to **set** positional parameters.
 
-<p><strong>Enter these commands</strong> at your terminal window:</p>
+**Enter these commands** at your terminal window:
 
-<pre><code> set a b c       #  set positional parameters to "a b c"
- echo $*         #  show them
- echo $#         #  how many?
- echo here is One: $1
- eval echo here is the Last: \$$#
- echo here is Two: $2
- echo here is Two: ${2:-two}
- echo here is Four: ${4:-four}
- alias ea="echo $# $*"
- ea
-</code></pre>
 
-<p>In the "here is the Last" example two things happened. In order to inspect
-the contents of the last positional parameter. you could have typed</p>
+     set a b c       #  set positional parameters to "a b c"
+     echo $*         #  show them
+     echo $#         #  how many?
+     echo here is One: $1
+     eval echo here is the Last: \$$#
+     echo here is Two: $2
+     echo here is Two: ${2:-two}
+     echo here is Four: ${4:-four}
+     alias ea="echo $# $*"
+     ea
 
-<pre><code> $ echo here is the Last: $3
-</code></pre>
+In the "here is the Last" example two things happened. In order to inspect
+the contents of the last positional parameter. you could have typed
 
-<p>In general, without knowing the number of positional parameters,
+     $ echo here is the Last: $3
+
+In general, without knowing the number of positional parameters,
 you need to find the number of the last parameter.  Having found it
-you can then evaluate it.  The shell idiom:</p>
+you can then evaluate it.  The shell idiom:
 
-<pre><code> $ eval .... \$ ...
-</code></pre>
+     $ eval .... \$ ...
 
-<p>where the leading backslash defers evaluation of the positional
+where the leading backslash defers evaluation of the positional
 parameter ${ ... } until the command has been parsed, the dollar-sign
 is escaped, or deferred for the subsequent evaluation, triggered by
-the preceending <em>eval</em> built-in.  In this case</p>
+the preceending *eval* built-in.  In this case
 
-<pre><code> $ eval echo ... \$$#      becomes
- $      echo ...  $3
-</code></pre>
+     $ eval echo ... \$$#      becomes
+     $      echo ...  $3 
 
-<p>Check your results here:</p>
+Check your results here:
 
-<pre><code>a b c
-3
-here is One: a
-here is the Last: c
-here is Two: b
-here is Two: b
-here is Four: four
-3 a b c
-</code></pre>
+    a b c
+    3
+    here is One: a
+    here is the Last: c
+    here is Two: b
+    here is Two: b
+    here is Four: four
+    3 a b c
 
-<h3>experiments</h3>
+### experiments
 
-<p>Experiment with other arguments to the <strong>set</strong> command.  Single-letter
-options also treat following arguments as <strong>positional parameters</strong>,
-for example:</p>
+Experiment with other arguments to the **set** command.  Single-letter
+options also treat following arguments as **positional parameters**,
+for example:
 
-<pre><code>  $ set -x         # turns on command tracing
-  $  ...           # execute some commands, before you 
-  $ set +x         # turn it off
-  $ set +x a b c   # also sets three parameters
-</code></pre>
+      $ set -x         # turns on command tracing
+      $  ...           # execute some commands, before you 
+      $ set +x         # turn it off
+	  $ set +x a b c   # also sets three parameters
 
-<p>Use the <em>set</em> builtin to set the positional parameters.  Experiment
-with these examples</p>
+Use the _set_ builtin to set the positional parameters.  Experiment
+with these examples
 
-<pre><code>  $ set one Two seven     # replaces any previous setting, as does
-  $ set $3 four five      # but keep one, add others
-  $ set $* six seven      # keep all
-  $ set one $*            # in a different order
-</code></pre>
+      $ set one Two seven     # replaces any previous setting, as does
+      $ set $3 four five      # but keep one, add others
+	  $ set $* six seven      # keep all
+	  $ set one $*            # in a different order
 
-<p>Future chapters explore the situations where the "--" option flag is
-required.</p>
+Future chapters explore the situations where the "--" option flag is
+required.
 
-<p>In these examples the trailing <em>sharp (#)</em> is the shell comment
-syntax.  And more about shell comments later as well.</p>
+In these examples the trailing *sharp (#)* is the shell comment
+syntax.  And more about shell comments later as well.
 
-<h3>questions</h3>
+### questions 
 
-<p>In the commands you entered at the terminal, what does the: </p>
+In the commands you entered at the terminal, what does the: 
 
-<ul>
-<li><em>asterisk ($*) mean?</em></li>
-<li><em>sharp/hash ($#) mean in this context?</em></li>
-<li><em>eval command do?</em>  hint: omit it from the command line.</li>
-</ul>
+* *asterisk ($\*) mean?*
+* *sharp/hash ($#) mean in this context?*
+* *eval command do?*  hint: omit it from the command line.
 
-<p>In the next section we will use the positional parameters within
-a function.</p>
+In the next section we will use the positional parameters within
+a function.
 
-<h2>The function body</h2>
+## The function body 
 
-<p>You can take advantage of this information to write a function that
-returns a function.  As you write this function, think of <em>what is a
-good <strong>default</strong> argument?</em>.  Enter these, a line at a time where the
-<em>echo === N ===</em> are inserted as benchmarks, and may be omitted:</p>
+You can take advantage of this information to write a function that
+returns a function.  As you write this function, think of *what is a
+good **default** argument?*.  Enter these, a line at a time where the
+_echo === N ===_ are inserted as benchmarks, and may be omitted:
 
-<pre><code>declare -f hello             # as before
-echo === 1 ===
-fbdy () { declare -f $1; }   # the simple version
-fbdy hello                   # same as before
-echo === 2 ===    
-fbdy fbdy                    # no kidding!, so why not ...
-echo === 3 ===    
-fbdy () { declare -f ${1:-fbdy}; }   # so ...
-fbdy                         # shows how to do it!, and
-echo === 4 ===        
-fbdy () { declare -f ${*:-fbdy}; }      # permits ...
-fbdy hello fbdy              # whew, let's take a break
-</code></pre>
 
-<p>Here are the results for the function body:</p>
+    declare -f hello             # as before
+    echo === 1 ===
+    fbdy () { declare -f $1; }   # the simple version
+    fbdy hello                   # same as before
+    echo === 2 ===    
+    fbdy fbdy                    # no kidding!, so why not ...
+    echo === 3 ===    
+    fbdy () { declare -f ${1:-fbdy}; }   # so ...
+    fbdy                         # shows how to do it!, and
+    echo === 4 ===        
+    fbdy () { declare -f ${*:-fbdy}; }      # permits ...
+    fbdy hello fbdy              # whew, let's take a break
 
-<pre><code>hello () 
-{ 
-    echo 'Hello World!'
-}
-=== 1 ===
-hello () 
-{ 
-    echo 'Hello World!'
-}
-=== 2 ===
-fbdy () 
-{ 
-    declare -f $1
-}
-=== 3 ===
-fbdy () 
-{ 
-    declare -f ${1:-fbdy}
-}
-=== 4 ===
-hello () 
-{ 
-    echo 'Hello World!'
-}
-fbdy () 
-{ 
-    declare -f ${*:-fbdy}
-}
-</code></pre>
 
-<p>Take note of the use of a default parameter in the highlighted
+Here are the results for the function body:
+
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    === 1 ===
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    === 2 ===
+    fbdy () 
+    { 
+        declare -f $1
+    }
+    === 3 ===
+    fbdy () 
+    { 
+        declare -f ${1:-fbdy}
+    }
+    === 4 ===
+    hello () 
+    { 
+        echo 'Hello World!'
+    }
+    fbdy () 
+    { 
+        declare -f ${*:-fbdy}
+    }
+
+Take note of the use of a default parameter in the highlighted
 example.  After using a single argument, the following example takes
-advantage of the <em>wild-card ($</em>)*, which expands into all the
-arguments, or if none, then the default.</p>
+advantage of the *wild-card ($*)*, which expands into all the
+arguments, or if none, then the default.
 
-<p>You may want to search <em>bash parameter expansion</em></p>
+You may want to search _bash parameter expansion_
 
-<h3>questions</h3>
+### questions 
 
-<ul>
-<li><p><em>were you able to follow exercise?</em></p></li>
-<li><p><em>did you understand each step?</em> if not,
-<a href="mailto:martymcgowan@alum.mit.edu?subject=function_body">Contact Me</a></p></li>
-<li><em>what does the final <strong>fbdy</strong> do with no arguments?</em></li>
-</ul>
+* *were you able to follow exercise?*
 
-<h2>assessment</h2>
+* *did you understand each step?* if not,
+  [Contact Me](mailto:martymcgowan@alum.mit.edu?subject=function_body)
+* *what does the final **fbdy** do with no arguments?*
 
-<p>Review, if necessary, your understanding of:</p>
+## assessment 
 
-<ul>
-<li><em>wild-card parameters</em></li>
-<li><em>default parameters</em></li>
-<li><em>setting positional parameters</em></li>
-<li>how the function body is displayed.  you might search <em>bash shell declare</em>.</li>
-</ul>
+Review, if necessary, your understanding of:
+
+* *wild-card parameters*
+* *default parameters*
+* *setting positional parameters*
+* how the function body is displayed.  you might search _bash shell declare_.
+

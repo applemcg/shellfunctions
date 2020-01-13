@@ -102,7 +102,7 @@ local_refs ()
 extract_new () 
 { 
     : date: 2018-07-28;
-    cat ${*:-*.md } | awk -v chno=$(chno) '
+    cat ${*:-*.md } | awk -v chn=$(chno) '
 
                              { print nc, nf, $0 > "/dev/stderr"; }
    
@@ -129,11 +129,11 @@ smd ()
     : date: 2019-10-09;
     :;
     report_notfile $1 && return 1;
-    set ${1%.src}.{md,src,html} ../../lib/style.css  $*;
+    set ${1%.src}.{md,src,html} 
     app_trace $*;    
     newest $1 ${2} $(included ${*:2}) || { 
         app_trace include $4 $2 ONLYCHANGED $1;
-        doit include $4 $2 2> ${1%.md}.err | tee ${1%.md}.tmp | onlyChanged $1
+        doit include $2 2> ${1%.md}.err | tee ${1%.md}.tmp | onlyChanged $1
     };
     markdown $1 > $3;
     open $3
@@ -141,15 +141,20 @@ smd ()
 mkht ()
 { 
     : convert a {default, the newest} source, SRC;
-    set -- $(suf_newest src $1);
+    report_notfile $1 && return 1
     set $1 ${1%.src}.md ../ch$(chno)_${1%.src}.md;
+    set $1 $2 ../ch$(chno)_${2}
     app_trace $*;
     backup_lib mklib;
-    app_trace "about to: markdown $1 > $2";
+    app_trace about to: SMD $1
     smd $1;
     app_trace newest $3 $2 OR cat $2 PIPE onlyChanged $3;
     newest $3 $2 || cat $2 | onlyChanged $3;
     comment what about *.sh *.run $(llib)/references.txt
+}
+mk_all ()
+{
+    return
 }
 labify () 
 { 
